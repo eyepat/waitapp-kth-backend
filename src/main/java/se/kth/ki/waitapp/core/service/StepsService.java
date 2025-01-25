@@ -1,5 +1,6 @@
 package se.kth.ki.waitapp.core.service;
 
+import io.quarkus.security.identity.SecurityIdentity;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import se.kth.ki.waitapp.core.interfaces.IStepsService;
@@ -11,8 +12,8 @@ import se.kth.ki.waitapp.mappers.IStepsMapper;
 public class StepsService extends GenericMetricService<Steps, StepsDTO> implements IStepsService {
 
     @Inject
-    public StepsService(IStepsMapper mapper) {
-        super(mapper);
+    public StepsService(IStepsMapper mapper, SecurityIdentity identity) {
+        super(mapper, identity);
     }
 
 }

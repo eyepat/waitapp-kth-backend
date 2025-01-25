@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import io.quarkus.hibernate.reactive.panache.Panache;
+import io.quarkus.security.identity.SecurityIdentity;
 import io.smallrye.mutiny.Uni;
 import lombok.NoArgsConstructor;
 import se.kth.ki.waitapp.core.interfaces.IGenericService;
@@ -13,15 +14,22 @@ import se.kth.ki.waitapp.mappers.IGenericMapper;
 
 @NoArgsConstructor
 public abstract class GenericService<T extends BaseModel, TDTO extends BaseDTO> implements IGenericService<T, TDTO> {
+
+    protected SecurityIdentity identity;
     protected IGenericMapper<T, TDTO> mapper;
 
-    public GenericService(IGenericMapper<T, TDTO> mapper) {
+    public GenericService(IGenericMapper<T, TDTO> mapper, SecurityIdentity identity) {
         this.mapper = mapper;
+        this.identity = identity;
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public Uni<List<TDTO>> findAll() {
+        if (identity == null || identity.isAnonymous()) {
+            return Uni.createFrom().failure(new SecurityException("No identity provided"));
+        }
+
         return Panache.withSession(() -> T.findAll().list()
                 .onItem().transform(entities -> entities.stream()
                         .map(entity -> mapper.toDTO((T) entity))
@@ -31,6 +39,9 @@ public abstract class GenericService<T extends BaseModel, TDTO extends BaseDTO> 
     @SuppressWarnings("unchecked")
     @Override
     public Uni<Optional<TDTO>> findById(Long id) {
+        if (identity == null || identity.isAnonymous()) {
+            return Uni.createFrom().failure(new SecurityException("No identity provided"));
+        }
         return Panache.withSession(() -> T.find("id", id).firstResult()
                 .onItem()
                 .transform(entity -> {
@@ -43,6 +54,9 @@ public abstract class GenericService<T extends BaseModel, TDTO extends BaseDTO> 
 
     @Override
     public Uni<TDTO> create(TDTO dto) {
+        if (identity == null || identity.isAnonymous()) {
+            return Uni.createFrom().failure(new SecurityException("No identity provided"));
+        }
         dto.setId(null);
         T entity = mapper.toEntity(dto);
         return Panache.withSession(() -> entity.persistAndFlush()
@@ -57,10 +71,18 @@ public abstract class GenericService<T extends BaseModel, TDTO extends BaseDTO> 
     @SuppressWarnings("unchecked")
     @Override
     public Uni<Optional<TDTO>> update(Long id, TDTO dto) {
+        if (identity == null || identity.isAnonymous()) {
+            return Uni.createFrom().failure(new SecurityException("No identity provided"));
+        }
         return Panache.withSession(() -> T.find("id", id).firstResult()
                 .onItem().transformToUni(existing -> {
                     if (existing == null) {
                         return Uni.createFrom().item(Optional.empty());
+                    }
+                    System.out.println("sub" + identity.getAttribute("sub"));
+                    if (!identity.getAttribute("sub").equals(((T) existing).getOwner()) && !identity.hasRole("admin")) {
+                        return Uni.createFrom()
+                                .failure(new SecurityException("Not authorized to update this resource"));
                     }
                     mapper.updateEntity(dto, (T) existing);
                     return ((T) existing).persistAndFlush()
@@ -70,12 +92,18 @@ public abstract class GenericService<T extends BaseModel, TDTO extends BaseDTO> 
 
     @Override
     public Uni<Boolean> delete(Long id) {
+        if (identity == null || identity.isAnonymous()) {
+            return Uni.createFrom().failure(new SecurityException("No identity provided"));
+        }
         return Panache.withSession(() -> T.delete("id", id)
                 .onItem().transform(deletedCount -> deletedCount > 0));
     }
 
     @Override
     public Uni<Boolean> existsById(Long id) {
+        if (identity == null || identity.isAnonymous()) {
+            return Uni.createFrom().failure(new SecurityException("No identity provided"));
+        }
         return Panache.withSession(() -> T.count("id", id)
                 .map(count -> count > 0));
     }

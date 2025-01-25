@@ -1,5 +1,6 @@
 package se.kth.ki.waitapp.core.service;
 
+import io.quarkus.security.identity.SecurityIdentity;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import se.kth.ki.waitapp.core.interfaces.ISprintService;
@@ -11,8 +12,8 @@ import se.kth.ki.waitapp.mappers.ISprintMapper;
 public class SprintService extends GenericService<Sprint, SprintDTO> implements ISprintService {
 
     @Inject
-    public SprintService(ISprintMapper mapper) {
-        super(mapper);
+    public SprintService(ISprintMapper mapper, SecurityIdentity identity) {
+        super(mapper, identity);
     }
 
 }

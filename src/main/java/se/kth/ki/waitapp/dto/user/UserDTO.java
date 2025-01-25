@@ -1,7 +1,6 @@
 package se.kth.ki.waitapp.dto.user;
 
 import java.time.LocalDate;
-import java.util.UUID;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
@@ -32,5 +31,4 @@ public class UserDTO extends BaseDTO {
     private Gender gender;
     private LocalDate ablationDate;
     private Boolean onboarded;
-    private UUID keycloakID;
 }

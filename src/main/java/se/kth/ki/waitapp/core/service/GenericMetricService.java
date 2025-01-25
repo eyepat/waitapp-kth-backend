@@ -3,6 +3,7 @@ package se.kth.ki.waitapp.core.service;
 import java.util.Optional;
 
 import io.quarkus.hibernate.reactive.panache.Panache;
+import io.quarkus.security.identity.SecurityIdentity;
 import io.smallrye.mutiny.Uni;
 import lombok.NoArgsConstructor;
 import se.kth.ki.waitapp.core.interfaces.IGenericMetricService;
@@ -14,8 +15,8 @@ import se.kth.ki.waitapp.mappers.IGenericMapper;
 public abstract class GenericMetricService<T extends BaseModel, TDTO extends BaseDTO> extends GenericService<T, TDTO>
         implements IGenericMetricService<T, TDTO> {
 
-    public GenericMetricService(IGenericMapper<T, TDTO> mapper) {
-        super(mapper);
+    public GenericMetricService(IGenericMapper<T, TDTO> mapper, SecurityIdentity identity) {
+        super(mapper, identity);
     }
 
     @SuppressWarnings("unchecked")

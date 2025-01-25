@@ -1,5 +1,6 @@
 package se.kth.ki.waitapp.core.service;
 
+import io.quarkus.security.identity.SecurityIdentity;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import se.kth.ki.waitapp.core.interfaces.IHeightService;
@@ -11,8 +12,8 @@ import se.kth.ki.waitapp.mappers.IHeightMapper;
 public class HeightService extends GenericMetricService<Height, HeightDTO> implements IHeightService {
 
     @Inject
-    public HeightService(IHeightMapper mapper) {
-        super(mapper);
+    public HeightService(IHeightMapper mapper, SecurityIdentity identity) {
+        super(mapper, identity);
     }
 
 }

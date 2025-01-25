@@ -1,5 +1,6 @@
 package se.kth.ki.waitapp.core.service;
 
+import io.quarkus.security.identity.SecurityIdentity;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import se.kth.ki.waitapp.core.interfaces.IBloodPressureService;
@@ -12,8 +13,8 @@ public class BloodPressureService extends GenericMetricService<BloodPressure, Bl
         implements IBloodPressureService {
 
     @Inject
-    public BloodPressureService(IBloodPressureMapper mapper) {
-        super(mapper);
+    public BloodPressureService(IBloodPressureMapper mapper, SecurityIdentity identity) {
+        super(mapper, identity);
     }
 
 }

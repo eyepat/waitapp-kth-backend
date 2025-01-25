@@ -51,9 +51,6 @@ public class User extends BaseModel {
     @Column(name = "onboarded")
     private Boolean onboarded;
 
-    @Column(name = "keycloakID", nullable = true)
-    private UUID keycloakID;
-
     @PrePersist
     protected void onCreate() {
         if (onboarded == null) {

@@ -1,5 +1,7 @@
 package se.kth.ki.waitapp.dto;
 
+import java.util.UUID;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import lombok.AllArgsConstructor;
@@ -14,4 +16,5 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 public abstract class BaseDTO {
     private Long id;
+    private UUID owner;
 }

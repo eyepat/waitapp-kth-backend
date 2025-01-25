@@ -1,5 +1,6 @@
 package se.kth.ki.waitapp.core.service;
 
+import io.quarkus.security.identity.SecurityIdentity;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import se.kth.ki.waitapp.core.interfaces.IRAPAService;
@@ -11,8 +12,8 @@ import se.kth.ki.waitapp.mappers.IRAPAMapper;
 public class RAPAService extends GenericMetricService<RAPA, RAPADTO> implements IRAPAService {
 
     @Inject
-    public RAPAService(IRAPAMapper mapper) {
-        super(mapper);
+    public RAPAService(IRAPAMapper mapper, SecurityIdentity identity) {
+        super(mapper, identity);
     }
 
 }
