@@ -114,6 +114,8 @@ public abstract class GenericService<T extends BaseModel, TDTO extends BaseDTO> 
             return Uni.createFrom().failure(new SecurityException("not able to get sub from jwt"));
         }
         var owner = UUID.fromString(sub);
+        dto.setId(id);
+        dto.setOwner(owner);
         return sf.withSession((s) -> {
             return repository.find("WHERE owner = ?1 AND id = ?2", owner, id).firstResult()
                     .onItem().transformToUni(existing -> {
