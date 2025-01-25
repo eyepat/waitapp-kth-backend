@@ -6,14 +6,19 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import se.kth.ki.waitapp.core.model.BaseModel;
 
 @Data
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -39,4 +44,13 @@ public class User extends BaseModel {
     @Column(name = "ablationDate", nullable = true, length = 11)
     private LocalDate ablationDate;
 
+    @Column(name = "onboarded")
+    private Boolean onboarded;
+
+    @PrePersist
+    protected void onCreate() {
+        if (onboarded == null) {
+            onboarded = false;
+        }
+    }
 }

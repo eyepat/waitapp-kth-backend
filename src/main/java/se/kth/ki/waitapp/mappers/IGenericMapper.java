@@ -5,9 +5,11 @@ import java.util.Optional;
 import org.mapstruct.MappingTarget;
 
 import jakarta.enterprise.context.ApplicationScoped;
+import se.kth.ki.waitapp.core.model.BaseModel;
+import se.kth.ki.waitapp.dto.BaseDTO;
 
 @ApplicationScoped
-public interface IGenericMapper<E, DTO> {
+public interface IGenericMapper<E extends BaseModel, DTO extends BaseDTO> {
     DTO toDTO(E entity);
 
     E toEntity(DTO dto);

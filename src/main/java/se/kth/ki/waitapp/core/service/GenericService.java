@@ -45,9 +45,15 @@ public abstract class GenericService<T extends BaseModel, TDTO extends BaseDTO> 
     public Uni<TDTO> create(TDTO dto) {
         T entity = mapper.toEntity(dto);
         return Panache.withSession(() -> entity.persistAndFlush()
-                .onItem().transform(savedEntity -> mapper.toDTO(entity)));
+                .onItem().transform(savedEntity -> {
+                    System.out.println(entity);
+                    var dto_ = mapper.toDTO(entity);
+                    System.out.println(dto_);
+                    return dto_;
+                }));
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public Uni<Optional<TDTO>> update(Long id, TDTO dto) {
         return Panache.withSession(() -> T.find("id", id).firstResult()
