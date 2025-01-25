@@ -3,10 +3,10 @@ package se.kth.ki.waitapp.dto.user;
 import java.time.LocalDate;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 import se.kth.ki.waitapp.core.model.user.Gender;
 import se.kth.ki.waitapp.dto.BaseDTO;
 
@@ -14,7 +14,7 @@ import se.kth.ki.waitapp.dto.BaseDTO;
 @EqualsAndHashCode(callSuper = true)
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@SuperBuilder
 public class RegisterDTO extends BaseDTO {
     private String email;
     private String password;

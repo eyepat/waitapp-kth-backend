@@ -24,6 +24,9 @@ import se.kth.ki.waitapp.core.model.BaseModel;
 @Builder
 @Entity
 public class Sprint extends BaseModel {
+
+    private Long id;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private SprintType sprintType;
@@ -45,7 +48,7 @@ public class Sprint extends BaseModel {
     private Float score;
 
     @Column(name = "userID")
-    private UUID userID;
+    private Long userID;
 
     @PrePersist
     protected void onCreate() {

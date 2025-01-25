@@ -1,13 +1,13 @@
 package se.kth.ki.waitapp.dto.metrics;
 
-import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-@Builder
+@SuperBuilder
 @NoArgsConstructor
 public class RAPADTO extends GenericMetricDTO<Integer> {
 }

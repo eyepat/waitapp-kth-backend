@@ -1,6 +1,7 @@
 package se.kth.ki.waitapp.core.model.user;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -25,6 +26,9 @@ import se.kth.ki.waitapp.core.model.BaseModel;
 @Builder
 @Table(name = "user_t")
 public class User extends BaseModel {
+
+    private Long id;
+
     @Column(name = "email", nullable = false, unique = true, length = 1024)
     private String email;
 

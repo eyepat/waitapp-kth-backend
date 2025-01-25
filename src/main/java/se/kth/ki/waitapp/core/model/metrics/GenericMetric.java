@@ -24,11 +24,14 @@ import se.kth.ki.waitapp.core.model.user.User;
 @NoArgsConstructor
 @MappedSuperclass
 public abstract class GenericMetric<T> extends BaseModel {
+
+    private Long id;
+
     @Column(name = "userID", nullable = false)
-    private UUID userID;
+    private Long userID;
 
     @Column(name = "sprintID", nullable = true)
-    private UUID sprintID;
+    private Long sprintID;
 
     @Column(name = "timestamp", nullable = false, updatable = false)
     private LocalDateTime timestamp;
