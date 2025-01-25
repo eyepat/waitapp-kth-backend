@@ -23,7 +23,7 @@ public abstract class GenericMetric<T> extends BaseModel {
     private Long sprintID;
 
     @Column(name = "timestamp", nullable = false, updatable = false)
-    private LocalDateTime timeStamp;
+    private LocalDateTime timestamp;
 
     @Column(name = "value", nullable = false)
     private T value;
