@@ -1,6 +1,7 @@
 package se.kth.ki.waitapp.core.model.sprint;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -25,6 +26,7 @@ import se.kth.ki.waitapp.core.model.BaseModel;
 public class Sprint extends BaseModel {
 
     private Long id;
+    private UUID owner;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)

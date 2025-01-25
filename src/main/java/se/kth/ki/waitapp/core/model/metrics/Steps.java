@@ -1,5 +1,7 @@
 package se.kth.ki.waitapp.core.model.metrics;
 
+import java.util.UUID;
+
 import jakarta.persistence.Entity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,4 +19,5 @@ import lombok.ToString;
 @Entity
 public class Steps extends GenericMetric<Integer> {
     private Long id;
+    private UUID owner;
 }

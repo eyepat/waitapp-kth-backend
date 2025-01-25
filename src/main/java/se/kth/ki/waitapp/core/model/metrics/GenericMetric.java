@@ -1,6 +1,7 @@
 package se.kth.ki.waitapp.core.model.metrics;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.JoinColumn;
@@ -25,6 +26,7 @@ import se.kth.ki.waitapp.core.model.user.User;
 public abstract class GenericMetric<T> extends BaseModel {
 
     private Long id;
+    private UUID owner;
 
     @Column(name = "userID", nullable = false)
     private Long userID;

@@ -28,12 +28,10 @@ import se.kth.ki.waitapp.core.model.BaseModel;
 public class User extends BaseModel {
 
     private Long id;
+    private UUID owner;
 
     @Column(name = "email", nullable = false, unique = true, length = 1024)
     private String email;
-
-    @Column(name = "password", nullable = false, length = 1024)
-    private String password;
 
     @Column(name = "fullName", nullable = false, length = 1024)
     private String fullName;

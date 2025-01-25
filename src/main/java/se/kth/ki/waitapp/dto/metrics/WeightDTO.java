@@ -9,5 +9,5 @@ import lombok.experimental.SuperBuilder;
 @EqualsAndHashCode(callSuper = true)
 @SuperBuilder
 @NoArgsConstructor
-public class WeightDTO extends GenericMetricDTO<Integer> {
+public class WeightDTO extends GenericMetricDTO<Double> {
 }
