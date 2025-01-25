@@ -10,7 +10,7 @@ import jakarta.ws.rs.core.Response;
 public class HealthCheckController {
     @GET
     @Produces(MediaType.TEXT_PLAIN)
-    public Response hello() {
+    public Response healthCheck() {
         return Response.ok("Healthy :)").build();
     }
 }

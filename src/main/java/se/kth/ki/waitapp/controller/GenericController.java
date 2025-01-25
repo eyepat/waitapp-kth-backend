@@ -3,7 +3,6 @@ package se.kth.ki.waitapp.controller;
 import java.util.List;
 
 import io.smallrye.mutiny.Uni;
-import io.smallrye.openapi.model.BaseModel;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;

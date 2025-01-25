@@ -13,6 +13,6 @@ import se.kth.ki.waitapp.dto.BaseDTO;
 public abstract class GenericMetricDTO<T> extends BaseDTO {
     private Long userID;
     private Long sprintID;
-    private LocalDateTime timeStamp;
+    private LocalDateTime timestamp;
     private T value;
 }
