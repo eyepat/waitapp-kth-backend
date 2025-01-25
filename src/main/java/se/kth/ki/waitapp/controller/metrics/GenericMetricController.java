@@ -1,5 +1,6 @@
-package se.kth.ki.waitapp.controller;
+package se.kth.ki.waitapp.controller.metrics;
 
+import se.kth.ki.waitapp.controller.GenericController;
 import se.kth.ki.waitapp.core.interfaces.IGenericService;
 import se.kth.ki.waitapp.dto.BaseDTO;
 

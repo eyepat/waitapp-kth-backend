@@ -1,4 +1,4 @@
-package se.kth.ki.waitapp.controller;
+package se.kth.ki.waitapp.controller.metrics;
 
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Path;

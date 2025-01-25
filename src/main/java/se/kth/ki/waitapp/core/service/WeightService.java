@@ -8,7 +8,7 @@ import se.kth.ki.waitapp.dto.metrics.WeightDTO;
 import se.kth.ki.waitapp.mappers.IWeightMapper;
 
 @ApplicationScoped
-public class WeightService extends GenericService<Weight, WeightDTO> implements IWeightService {
+public class WeightService extends GenericMetricService<Weight, WeightDTO> implements IWeightService {
 
     @Inject
     public WeightService(IWeightMapper mapper) {
