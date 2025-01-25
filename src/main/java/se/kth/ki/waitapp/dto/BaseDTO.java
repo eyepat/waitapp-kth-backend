@@ -1,7 +1,5 @@
 package se.kth.ki.waitapp.dto;
 
-import java.util.UUID;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import lombok.AllArgsConstructor;

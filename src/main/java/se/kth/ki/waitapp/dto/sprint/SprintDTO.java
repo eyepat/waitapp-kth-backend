@@ -1,7 +1,6 @@
 package se.kth.ki.waitapp.dto.sprint;
 
 import java.time.LocalDate;
-import java.util.UUID;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

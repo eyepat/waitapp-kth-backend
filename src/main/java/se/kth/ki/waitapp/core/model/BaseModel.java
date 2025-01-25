@@ -1,11 +1,6 @@
 package se.kth.ki.waitapp.core.model;
 
-import java.util.UUID;
-
 import io.quarkus.hibernate.reactive.panache.PanacheEntity;
-import io.quarkus.hibernate.reactive.panache.PanacheEntityBase;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -1,7 +1,5 @@
 package se.kth.ki.waitapp.core.model.metrics;
 
-import java.util.UUID;
-
 import jakarta.persistence.Entity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
