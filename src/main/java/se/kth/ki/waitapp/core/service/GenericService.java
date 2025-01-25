@@ -43,6 +43,7 @@ public abstract class GenericService<T extends BaseModel, TDTO extends BaseDTO> 
 
     @Override
     public Uni<TDTO> create(TDTO dto) {
+        dto.setId(null);
         T entity = mapper.toEntity(dto);
         return Panache.withSession(() -> entity.persistAndFlush()
                 .onItem().transform(savedEntity -> {

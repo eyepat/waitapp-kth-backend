@@ -1,6 +1,7 @@
 package se.kth.ki.waitapp.core.model.user;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -49,6 +50,9 @@ public class User extends BaseModel {
 
     @Column(name = "onboarded")
     private Boolean onboarded;
+
+    @Column(name = "keycloakID", nullable = true)
+    private UUID keycloakID;
 
     @PrePersist
     protected void onCreate() {

@@ -1,7 +1,10 @@
 package se.kth.ki.waitapp.dto.user;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -18,11 +21,16 @@ import se.kth.ki.waitapp.dto.BaseDTO;
 @NoArgsConstructor
 @SuperBuilder
 public class UserDTO extends BaseDTO {
+    @NotNull
+    @Email
     private String email;
     private String password;
+    @NotNull
     private String fullName;
+    @NotNull
     private LocalDate birthDate;
     private Gender gender;
     private LocalDate ablationDate;
     private Boolean onboarded;
+    private UUID keycloakID;
 }

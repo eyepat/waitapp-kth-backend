@@ -3,6 +3,7 @@ package se.kth.ki.waitapp.controller;
 import java.util.List;
 
 import io.smallrye.mutiny.Uni;
+import jakarta.validation.Valid;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
@@ -41,7 +42,7 @@ public abstract class GenericController<TDTO extends BaseDTO, TSERVICE extends I
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Uni<Response> create(TDTO dto) {
+    public Uni<Response> create(@Valid TDTO dto) {
         return service.create(dto)
                 .map(created -> Response.status(Response.Status.CREATED).entity(created).build());
     }
@@ -50,7 +51,7 @@ public abstract class GenericController<TDTO extends BaseDTO, TSERVICE extends I
     @Path("/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Uni<Response> update(@PathParam("id") Long id, TDTO dto) {
+    public Uni<Response> update(@PathParam("id") Long id, @Valid TDTO dto) {
         return service.update(id, dto)
                 .map(updated -> updated != null ? Response.ok(updated).build()
                         : Response.status(Response.Status.NOT_FOUND).build());

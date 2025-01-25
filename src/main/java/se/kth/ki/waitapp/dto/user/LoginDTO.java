@@ -1,5 +1,7 @@
 package se.kth.ki.waitapp.dto.user;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -13,6 +15,9 @@ import se.kth.ki.waitapp.dto.BaseDTO;
 @NoArgsConstructor
 @SuperBuilder
 public class LoginDTO extends BaseDTO {
+    @NotNull
+    @Email
     private String email;
+    @NotNull
     private String password;
 }
