@@ -2,10 +2,14 @@ package se.kth.ki.waitapp.core.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
+
+import org.eclipse.microprofile.jwt.JsonWebToken;
 
 import io.quarkus.hibernate.reactive.panache.Panache;
 import io.quarkus.security.identity.SecurityIdentity;
 import io.smallrye.mutiny.Uni;
+import jakarta.inject.Inject;
 import lombok.NoArgsConstructor;
 import se.kth.ki.waitapp.core.interfaces.IGenericService;
 import se.kth.ki.waitapp.core.model.BaseModel;
@@ -17,6 +21,9 @@ public abstract class GenericService<T extends BaseModel, TDTO extends BaseDTO> 
 
     protected SecurityIdentity identity;
     protected IGenericMapper<T, TDTO> mapper;
+
+    @Inject
+    JsonWebToken jwt;
 
     public GenericService(IGenericMapper<T, TDTO> mapper, SecurityIdentity identity) {
         this.mapper = mapper;
@@ -59,6 +66,9 @@ public abstract class GenericService<T extends BaseModel, TDTO extends BaseDTO> 
         }
         dto.setId(null);
         T entity = mapper.toEntity(dto);
+        String sub = jwt.getClaim("sub");
+        entity.setOwner(UUID.fromString(sub));
+
         return Panache.withSession(() -> entity.persistAndFlush()
                 .onItem().transform(savedEntity -> {
                     System.out.println(entity);
@@ -79,8 +89,8 @@ public abstract class GenericService<T extends BaseModel, TDTO extends BaseDTO> 
                     if (existing == null) {
                         return Uni.createFrom().item(Optional.empty());
                     }
-                    System.out.println("sub" + identity.getAttribute("sub"));
-                    if (!identity.getAttribute("sub").equals(((T) existing).getOwner()) && !identity.hasRole("admin")) {
+                    String sub = jwt.getClaim("sub");
+                    if (!sub.equals(((T) existing).getOwner().toString()) && !identity.hasRole("admin")) {
                         return Uni.createFrom()
                                 .failure(new SecurityException("Not authorized to update this resource"));
                     }
