@@ -1,7 +1,5 @@
 package se.kth.ki.waitapp.core.service;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 import io.quarkus.hibernate.reactive.panache.Panache;
@@ -10,7 +8,6 @@ import io.smallrye.mutiny.Uni;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import se.kth.ki.waitapp.core.interfaces.IUserService;
-import se.kth.ki.waitapp.core.model.user.Gender;
 import se.kth.ki.waitapp.core.model.user.User;
 import se.kth.ki.waitapp.dto.metrics.BloodPressureDTO;
 import se.kth.ki.waitapp.dto.metrics.HeightDTO;
@@ -90,9 +87,13 @@ public class UserService extends GenericService<User, UserDTO> implements IUserS
                             .chain((savedEntity) -> {
                                 var id = ((User) savedEntity).getId();
                                 height.setUserID(id);
+                                height.setValue(dto.getHeight());
                                 weight.setUserID(id);
+                                weight.setValue(dto.getWeight());
                                 waistSize.setUserID(id);
+                                waistSize.setValue(dto.getWaistSize());
                                 bloodPressure.setUserID(id);
+                                bloodPressure.setValue(dto.getBloodPressure());
                                 return height.persistAndFlush()
                                         .chain(() -> weight.persistAndFlush())
                                         .chain(() -> waistSize.persistAndFlush())
