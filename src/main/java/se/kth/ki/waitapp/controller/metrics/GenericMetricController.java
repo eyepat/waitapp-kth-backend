@@ -8,7 +8,7 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import se.kth.ki.waitapp.controller.GenericController;
-import se.kth.ki.waitapp.core.interfaces.IGenericMetricService;
+import se.kth.ki.waitapp.core.interfaces.service.IGenericMetricService;
 import se.kth.ki.waitapp.dto.BaseDTO;
 
 public abstract class GenericMetricController<TDTO extends BaseDTO, TSERVICE extends IGenericMetricService<?, TDTO>>

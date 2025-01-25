@@ -24,6 +24,7 @@ services:
     volumes:
       - keycloak-data:/opt/keycloak/data
       - ./keycloak/realms:/opt/keycloak/data/import
+      #- ./keycloak/themes:/opt/keycloak/themes
     ports:
       - "9090:8080"
     command:

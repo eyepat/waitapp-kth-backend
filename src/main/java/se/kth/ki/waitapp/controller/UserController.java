@@ -12,17 +12,18 @@ import org.eclipse.microprofile.openapi.annotations.security.SecuritySchemes;
 
 import io.quarkus.security.Authenticated;
 import io.smallrye.mutiny.Uni;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import se.kth.ki.waitapp.core.interfaces.IUserService;
+import se.kth.ki.waitapp.core.interfaces.service.IUserService;
 import se.kth.ki.waitapp.dto.user.OnboardingDTO;
-import se.kth.ki.waitapp.dto.user.RegisterDTO;
 import se.kth.ki.waitapp.dto.user.UserDTO;
 
 @Path("user")
@@ -48,6 +49,22 @@ public class UserController extends GenericController<UserDTO, IUserService> {
             @Valid @RequestBody(description = "User onboarding details", required = true) OnboardingDTO dto) {
         return service.onboard(dto)
                 .map(created -> Response.status(Response.Status.CREATED).entity(created).build());
+    }
+
+    @GET
+    @Path("self")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @Operation(summary = "Get self", description = "Get the user associated with you")
+    public Uni<Response> self() {
+        return service.self()
+                .map(self -> Response.status(Response.Status.OK).entity(self).build());
+    }
+
+    @RolesAllowed({ "admin" })
+    @Override
+    public Uni<Response> create(UserDTO dto) {
+        return super.create(dto);
     }
 
 }

@@ -26,7 +26,7 @@ import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import se.kth.ki.waitapp.core.interfaces.IGenericService;
+import se.kth.ki.waitapp.core.interfaces.service.IGenericService;
 import se.kth.ki.waitapp.dto.BaseDTO;
 
 @SecuritySchemes(value = {

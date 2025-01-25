@@ -1,4 +1,4 @@
-package se.kth.ki.waitapp.core.interfaces;
+package se.kth.ki.waitapp.core.interfaces.service;
 
 import io.smallrye.mutiny.Uni;
 import se.kth.ki.waitapp.core.model.user.User;
@@ -7,4 +7,6 @@ import se.kth.ki.waitapp.dto.user.UserDTO;
 
 public interface IUserService extends IGenericService<User, UserDTO> {
     Uni<UserDTO> onboard(OnboardingDTO dto);
+
+    Uni<UserDTO> self();
 }

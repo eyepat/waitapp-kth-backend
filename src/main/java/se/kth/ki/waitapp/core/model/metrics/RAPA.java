@@ -3,6 +3,8 @@ package se.kth.ki.waitapp.core.model.metrics;
 import java.util.UUID;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,6 +19,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class RAPA extends GenericMetric<Integer> {
     private Long id;
     private UUID owner;

@@ -41,7 +41,7 @@ public abstract class GenericMetric<T> extends BaseModel {
     private T value;
 
     @ManyToOne
-    @JoinColumn(name = "userID", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+    @JoinColumn(name = "owner", referencedColumnName = "owner", nullable = false, insertable = false, updatable = false)
     private User user;
 
     @ManyToOne

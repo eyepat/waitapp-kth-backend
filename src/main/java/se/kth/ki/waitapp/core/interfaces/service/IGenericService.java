@@ -1,4 +1,4 @@
-package se.kth.ki.waitapp.core.interfaces;
+package se.kth.ki.waitapp.core.interfaces.service;
 
 import java.util.List;
 import java.util.Optional;
