@@ -10,6 +10,7 @@ import se.kth.ki.waitapp.dto.metrics.StepsDTO;
 
 @Path("metrics/steps")
 @SecurityRequirement(name = "KeycloakOAuth2")
+@SecurityRequirement(name = "OAuth2")
 @Authenticated
 public class StepsController extends GenericMetricController<StepsDTO, IStepsService> {
 

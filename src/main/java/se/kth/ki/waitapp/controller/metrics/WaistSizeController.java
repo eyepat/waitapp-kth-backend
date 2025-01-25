@@ -10,6 +10,7 @@ import se.kth.ki.waitapp.dto.metrics.WaistSizeDTO;
 
 @Path("waistsize")
 @SecurityRequirement(name = "KeycloakOAuth2")
+@SecurityRequirement(name = "OAuth2")
 @Authenticated
 public class WaistSizeController extends GenericMetricController<WaistSizeDTO, IWaistSizeService> {
 

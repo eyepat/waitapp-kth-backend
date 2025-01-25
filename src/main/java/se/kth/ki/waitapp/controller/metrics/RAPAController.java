@@ -10,6 +10,7 @@ import se.kth.ki.waitapp.dto.metrics.RAPADTO;
 
 @Path("metrics/rapa")
 @SecurityRequirement(name = "KeycloakOAuth2")
+@SecurityRequirement(name = "OAuth2")
 @Authenticated
 public class RAPAController extends GenericMetricController<RAPADTO, IRAPAService> {
 

@@ -33,6 +33,7 @@ import se.kth.ki.waitapp.dto.BaseDTO;
         @SecurityScheme(securitySchemeName = "KeycloakOAuth2", type = SecuritySchemeType.OAUTH2, scheme = "Bearer", bearerFormat = "JWT", flows = @OAuthFlows(authorizationCode = @OAuthFlow(authorizationUrl = "http://localhost:9090/realms/waitapp/protocol/openid-connect/auth", tokenUrl = "http://localhost:9090/realms/waitapp/protocol/openid-connect/token", scopes = @OAuthScope(name = "openid", description = "OpenID Connect scope"))))
 })
 @SecurityRequirement(name = "KeycloakOAuth2")
+@SecurityRequirement(name = "OAuth2")
 @Authenticated
 public abstract class GenericController<TDTO extends BaseDTO, TSERVICE extends IGenericService<?, TDTO>> {
     protected TSERVICE service;
@@ -55,7 +56,7 @@ public abstract class GenericController<TDTO extends BaseDTO, TSERVICE extends I
     }
 
     @GET
-    @Path("/{id}")
+    @Path("/byId/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     @Authenticated
     public Uni<Response> getById(@PathParam("id") Long id) {

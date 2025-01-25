@@ -10,6 +10,7 @@ import se.kth.ki.waitapp.dto.metrics.BloodPressureDTO;
 
 @Path("metrics/bloodpressure")
 @SecurityRequirement(name = "KeycloakOAuth2")
+@SecurityRequirement(name = "OAuth2")
 @Authenticated
 public class BloodPressureController extends GenericMetricController<BloodPressureDTO, IBloodPressureService> {
 
