@@ -2,26 +2,24 @@ package se.kth.ki.waitapp.core.model.user;
 
 import java.time.LocalDate;
 
-import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import se.kth.ki.waitapp.core.model.BaseModel;
 
 @Data
+@NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Builder
-public class User extends PanacheEntity {
-    @Id
-    @Column(name = "userID", nullable = false)
-    private long userID;
-
+@Table(name = "user_t")
+public class User extends BaseModel {
     @Column(name = "email", nullable = false, unique = true, length = 1024)
     private String email;
 

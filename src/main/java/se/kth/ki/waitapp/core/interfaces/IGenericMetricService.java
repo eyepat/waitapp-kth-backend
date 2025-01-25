@@ -1,5 +1,7 @@
 package se.kth.ki.waitapp.core.interfaces;
 
-public interface IGenericMetricService<T, TDTO> extends IGenericService<T, TDTO> {
+import se.kth.ki.waitapp.core.model.BaseModel;
+import se.kth.ki.waitapp.dto.BaseDTO;
 
+public interface IGenericMetricService<T extends BaseModel, TDTO extends BaseDTO> extends IGenericService<T, TDTO> {
 }

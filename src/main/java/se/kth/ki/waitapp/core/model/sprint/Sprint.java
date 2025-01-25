@@ -2,27 +2,22 @@ package se.kth.ki.waitapp.core.model.sprint;
 
 import java.time.LocalDate;
 
-import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import se.kth.ki.waitapp.core.model.BaseModel;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Entity
-public class Sprint extends PanacheEntity {
-    @Id
-    @Column(name = "sprintID", nullable = false)
-    private long sprintID;
-
+public class Sprint extends BaseModel {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private SprintType sprintType;
@@ -34,7 +29,7 @@ public class Sprint extends PanacheEntity {
     private LocalDate endDate;
 
     @Column(nullable = false)
-    private boolean completed;
+    private Boolean completed;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -44,5 +39,5 @@ public class Sprint extends PanacheEntity {
     private Float score;
 
     @Column(name = "userID")
-    private long userID;
+    private Long userID;
 }

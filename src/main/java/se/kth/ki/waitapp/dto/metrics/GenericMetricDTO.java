@@ -3,20 +3,16 @@ package se.kth.ki.waitapp.dto.metrics;
 import java.time.LocalDateTime;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import se.kth.ki.waitapp.dto.BaseDTO;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-public class GenericMetricDTO<T> {
+public abstract class GenericMetricDTO<T> extends BaseDTO {
     private Long userID;
-
     private Long sprintID;
-
     private LocalDateTime timeStamp;
-
     private T value;
 }
