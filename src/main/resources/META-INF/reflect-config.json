@@ -1,0 +1,47 @@
+[
+  {
+    "name": "se.kth.ki.waitapp.core.model.metrics.BloodPressure",
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "se.kth.ki.waitapp.core.model.metrics.Height",
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "se.kth.ki.waitapp.core.model.metrics.RAPA",
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "se.kth.ki.waitapp.core.model.metrics.Steps",
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "se.kth.ki.waitapp.core.model.metrics.WaistSize",
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "se.kth.ki.waitapp.core.model.metrics.Weight",
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "se.kth.ki.waitapp.core.model.sprint.Sprint",
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "se.kth.ki.waitapp.core.model.user.User",
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "se.kth.ki.waitapp.dto.user.User",
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true
+  }
+]

@@ -10,7 +10,7 @@ import se.kth.ki.waitapp.dto.metrics.HeightDTO;
 
 @Path("metrics/height")
 @SecurityRequirement(name = "KeycloakOAuth2")
-@SecurityRequirement(name = "OAuth2")
+@SecurityRequirement(name = "SecurityScheme")
 @Authenticated
 public class HeightController extends GenericMetricController<HeightDTO, IHeightService> {
 
