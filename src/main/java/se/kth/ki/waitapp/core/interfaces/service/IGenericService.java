@@ -4,10 +4,10 @@ import java.util.List;
 import java.util.Optional;
 
 import io.smallrye.mutiny.Uni;
-import se.kth.ki.waitapp.core.model.BaseModel;
-import se.kth.ki.waitapp.dto.BaseDTO;
+import se.kth.ki.waitapp.core.model.IBaseModel;
+import se.kth.ki.waitapp.dto.IBaseDTO;
 
-public interface IGenericService<T extends BaseModel, TDTO extends BaseDTO> {
+public interface IGenericService<T extends IBaseModel, TDTO extends IBaseDTO> {
 
     // Retrieve all entities as DTOs
     Uni<List<TDTO>> findAll();

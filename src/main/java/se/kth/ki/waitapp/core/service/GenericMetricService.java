@@ -9,11 +9,13 @@ import lombok.NoArgsConstructor;
 import se.kth.ki.waitapp.core.interfaces.repository.IGenericMetricRepository;
 import se.kth.ki.waitapp.core.interfaces.service.IGenericMetricService;
 import se.kth.ki.waitapp.core.model.metrics.GenericMetric;
+import se.kth.ki.waitapp.core.model.metrics.IGenericMetric;
 import se.kth.ki.waitapp.dto.BaseDTO;
+import se.kth.ki.waitapp.dto.IBaseDTO;
 import se.kth.ki.waitapp.mappers.IGenericMapper;
 
 @NoArgsConstructor
-public abstract class GenericMetricService<T extends GenericMetric<?>, TDTO extends BaseDTO>
+public abstract class GenericMetricService<T extends IGenericMetric<?>, TDTO extends IBaseDTO>
         extends GenericService<T, TDTO>
         implements IGenericMetricService<T, TDTO> {
 
@@ -23,8 +25,8 @@ public abstract class GenericMetricService<T extends GenericMetric<?>, TDTO exte
     }
 
     public Uni<Optional<TDTO>> latest() {
-        String sub = (String) jwt.claim("sub").get();
-        if (sub == null || sub.isEmpty()) {
+        String sub = jwt.getSubject();
+        if (sub.isEmpty()) {
             return Uni.createFrom().failure(new SecurityException("not able to get sub from jwt"));
         }
         var owner = UUID.fromString(sub);

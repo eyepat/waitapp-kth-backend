@@ -1,6 +1,6 @@
 package se.kth.ki.waitapp.core.interfaces.repository;
 
-import se.kth.ki.waitapp.core.model.metrics.GenericMetric;
+import se.kth.ki.waitapp.core.model.metrics.IGenericMetric;
 
-public interface IGenericMetricRepository<T extends GenericMetric<?>> extends IGenericRepository<T> {
+public interface IGenericMetricRepository<T extends IGenericMetric<?>> extends IGenericRepository<T> {
 }

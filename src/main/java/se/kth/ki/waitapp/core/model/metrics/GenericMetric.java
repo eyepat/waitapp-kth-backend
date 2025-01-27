@@ -3,17 +3,15 @@ package se.kth.ki.waitapp.core.model.metrics;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.MappedSuperclass;
-import jakarta.persistence.PrePersist;
+import io.quarkus.hibernate.reactive.panache.PanacheEntity;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import se.kth.ki.waitapp.core.model.BaseModel;
+import se.kth.ki.waitapp.core.model.IBaseModel;
 import se.kth.ki.waitapp.core.model.sprint.Sprint;
 import se.kth.ki.waitapp.core.model.user.User;
 
@@ -23,9 +21,12 @@ import se.kth.ki.waitapp.core.model.user.User;
 @AllArgsConstructor
 @NoArgsConstructor
 @MappedSuperclass
-public abstract class GenericMetric<T> extends BaseModel {
+public abstract class GenericMetric<T> extends PanacheEntity implements IGenericMetric<T> {
 
+    @Id
     private Long id;
+
+    @Column(name= "owner", nullable = false)
     private UUID owner;
 
     @Column(name = "userID", nullable = false)

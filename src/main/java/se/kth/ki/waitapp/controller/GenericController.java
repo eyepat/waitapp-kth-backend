@@ -28,6 +28,7 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import se.kth.ki.waitapp.core.interfaces.service.IGenericService;
 import se.kth.ki.waitapp.dto.BaseDTO;
+import se.kth.ki.waitapp.dto.IBaseDTO;
 
 @SecuritySchemes(value = {
         @SecurityScheme(securitySchemeName = "KeycloakOAuth2", type = SecuritySchemeType.OAUTH2, scheme = "Bearer", bearerFormat = "JWT", flows = @OAuthFlows(authorizationCode = @OAuthFlow(authorizationUrl = "http://localhost:9090/realms/waitapp/protocol/openid-connect/auth", tokenUrl = "http://localhost:9090/realms/waitapp/protocol/openid-connect/token", scopes = @OAuthScope(name = "openid", description = "OpenID Connect scope"))))
@@ -35,7 +36,7 @@ import se.kth.ki.waitapp.dto.BaseDTO;
 @SecurityRequirement(name = "KeycloakOAuth2")
 @SecurityRequirement(name = "SecurityScheme")
 @Authenticated
-public abstract class GenericController<TDTO extends BaseDTO, TSERVICE extends IGenericService<?, TDTO>> {
+public abstract class GenericController<TDTO extends IBaseDTO, TSERVICE extends IGenericService<?, TDTO>> {
     protected TSERVICE service;
 
     @Inject
