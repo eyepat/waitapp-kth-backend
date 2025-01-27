@@ -9,9 +9,9 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import se.kth.ki.waitapp.controller.GenericController;
 import se.kth.ki.waitapp.core.interfaces.service.IGenericMetricService;
-import se.kth.ki.waitapp.dto.BaseDTO;
+import se.kth.ki.waitapp.dto.IBaseDTO;
 
-public abstract class GenericMetricController<TDTO extends BaseDTO, TSERVICE extends IGenericMetricService<?, TDTO>>
+public abstract class GenericMetricController<TDTO extends IBaseDTO, TSERVICE extends IGenericMetricService<?, TDTO>>
                 extends GenericController<TDTO, TSERVICE> {
 
         public GenericMetricController(TSERVICE service) {

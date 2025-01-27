@@ -4,9 +4,7 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 import lombok.*;
-import lombok.experimental.SuperBuilder;
 import se.kth.ki.waitapp.core.model.user.Gender;
-import se.kth.ki.waitapp.dto.BaseDTO;
 import se.kth.ki.waitapp.dto.IBaseDTO;
 
 @Data

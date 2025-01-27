@@ -22,7 +22,6 @@ import se.kth.ki.waitapp.core.model.IBaseModel;
 @Entity
 public class Sprint extends PanacheEntity implements IBaseModel {
 
-    @Id
     private Long id;
 
     @Column(name = "owner", nullable = false)

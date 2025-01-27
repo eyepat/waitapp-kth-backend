@@ -8,9 +8,7 @@ import io.smallrye.mutiny.Uni;
 import lombok.NoArgsConstructor;
 import se.kth.ki.waitapp.core.interfaces.repository.IGenericMetricRepository;
 import se.kth.ki.waitapp.core.interfaces.service.IGenericMetricService;
-import se.kth.ki.waitapp.core.model.metrics.GenericMetric;
 import se.kth.ki.waitapp.core.model.metrics.IGenericMetric;
-import se.kth.ki.waitapp.dto.BaseDTO;
 import se.kth.ki.waitapp.dto.IBaseDTO;
 import se.kth.ki.waitapp.mappers.IGenericMapper;
 

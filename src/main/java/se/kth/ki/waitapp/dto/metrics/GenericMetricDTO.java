@@ -6,10 +6,8 @@ import java.util.UUID;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
-import se.kth.ki.waitapp.dto.BaseDTO;
 import se.kth.ki.waitapp.dto.IBaseDTO;
 
 @Data

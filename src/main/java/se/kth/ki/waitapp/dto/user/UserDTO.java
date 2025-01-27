@@ -6,9 +6,7 @@ import java.util.UUID;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
-import lombok.experimental.SuperBuilder;
 import se.kth.ki.waitapp.core.model.user.Gender;
-import se.kth.ki.waitapp.dto.BaseDTO;
 import se.kth.ki.waitapp.dto.IBaseDTO;
 
 @Data

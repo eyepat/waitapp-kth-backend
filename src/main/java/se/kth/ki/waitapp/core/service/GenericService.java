@@ -13,9 +13,7 @@ import jakarta.inject.Inject;
 import lombok.NoArgsConstructor;
 import se.kth.ki.waitapp.core.interfaces.repository.IGenericRepository;
 import se.kth.ki.waitapp.core.interfaces.service.IGenericService;
-import se.kth.ki.waitapp.core.model.BaseModel;
 import se.kth.ki.waitapp.core.model.IBaseModel;
-import se.kth.ki.waitapp.dto.BaseDTO;
 import se.kth.ki.waitapp.dto.IBaseDTO;
 import se.kth.ki.waitapp.mappers.IGenericMapper;
 

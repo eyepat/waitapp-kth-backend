@@ -10,8 +10,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import se.kth.ki.waitapp.core.model.BaseModel;
-import se.kth.ki.waitapp.core.model.IBaseModel;
 import se.kth.ki.waitapp.core.model.sprint.Sprint;
 import se.kth.ki.waitapp.core.model.user.User;
 
@@ -23,10 +21,9 @@ import se.kth.ki.waitapp.core.model.user.User;
 @MappedSuperclass
 public abstract class GenericMetric<T> extends PanacheEntity implements IGenericMetric<T> {
 
-    @Id
     private Long id;
 
-    @Column(name= "owner", nullable = false)
+    @Column(name = "owner", nullable = false)
     private UUID owner;
 
     @Column(name = "userID", nullable = false)
@@ -42,7 +39,7 @@ public abstract class GenericMetric<T> extends PanacheEntity implements IGeneric
     private T value;
 
     @ManyToOne
-    @JoinColumn(name = "owner", referencedColumnName = "owner", nullable = false, insertable = false, updatable = false)
+    @JoinColumn(name = "userID", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     private User user;
 
     @ManyToOne

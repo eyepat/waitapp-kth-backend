@@ -14,13 +14,15 @@ import lombok.ToString;
 import se.kth.ki.waitapp.core.model.IBaseModel;
 
 @Data
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Builder
 @Table(name = "user_t")
 public class User extends PanacheEntity implements IBaseModel {
-    @Id
+
     private Long id;
     @Column(name = "owner", nullable = false)
     private UUID owner;
