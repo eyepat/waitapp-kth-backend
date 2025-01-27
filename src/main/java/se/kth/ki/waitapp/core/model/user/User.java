@@ -24,7 +24,7 @@ import se.kth.ki.waitapp.core.model.IBaseModel;
 public class User extends PanacheEntity implements IBaseModel {
 
     private Long id;
-    @Column(name = "owner", nullable = false)
+    @Column(name = "owner", nullable = false, unique = true)
     private UUID owner;
 
     @Column(name = "email", nullable = false, unique = true, length = 1024)

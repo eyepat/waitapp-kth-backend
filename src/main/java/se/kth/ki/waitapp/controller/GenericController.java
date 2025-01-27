@@ -2,8 +2,14 @@ package se.kth.ki.waitapp.controller;
 
 import java.util.List;
 
+import org.checkerframework.checker.units.qual.t;
 import org.eclipse.microprofile.jwt.JsonWebToken;
+import org.eclipse.microprofile.openapi.annotations.enums.SchemaType;
 import org.eclipse.microprofile.openapi.annotations.enums.SecuritySchemeType;
+import org.eclipse.microprofile.openapi.annotations.media.Content;
+import org.eclipse.microprofile.openapi.annotations.media.Schema;
+import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
+import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
 import org.eclipse.microprofile.openapi.annotations.security.OAuthFlow;
 import org.eclipse.microprofile.openapi.annotations.security.OAuthFlows;
 import org.eclipse.microprofile.openapi.annotations.security.OAuthScope;
@@ -28,6 +34,7 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import se.kth.ki.waitapp.core.interfaces.service.IGenericService;
 import se.kth.ki.waitapp.dto.IBaseDTO;
+import se.kth.ki.waitapp.provider.errors.ErrorResponse;
 
 @SecuritySchemes(value = {
         @SecurityScheme(securitySchemeName = "KeycloakOAuth2", type = SecuritySchemeType.OAUTH2, scheme = "Bearer", bearerFormat = "JWT", flows = @OAuthFlows(authorizationCode = @OAuthFlow(authorizationUrl = "http://localhost:9090/realms/waitapp/protocol/openid-connect/auth", tokenUrl = "http://localhost:9090/realms/waitapp/protocol/openid-connect/token", scopes = @OAuthScope(name = "openid", description = "OpenID Connect scope"))))
@@ -37,6 +44,7 @@ import se.kth.ki.waitapp.dto.IBaseDTO;
 @Authenticated
 public abstract class GenericController<TDTO extends IBaseDTO, TSERVICE extends IGenericService<?, TDTO>> {
     protected TSERVICE service;
+    protected Class<TDTO> resourceClass;
 
     @Inject
     SecurityIdentity identity;
@@ -48,13 +56,30 @@ public abstract class GenericController<TDTO extends IBaseDTO, TSERVICE extends 
         this.service = service;
     }
 
+    @APIResponses({
+            @APIResponse(responseCode = "200", description = "Successfully returns all the resources requested", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = IBaseDTO.class, type = SchemaType.ARRAY))),
+            @APIResponse(responseCode = "400", description = "Invalid request, bad parameters", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = ErrorResponse.class))),
+            @APIResponse(responseCode = "401", description = "Unauthorized", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = ErrorResponse.class))),
+            @APIResponse(responseCode = "403", description = "Forbidden", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = ErrorResponse.class))),
+            @APIResponse(responseCode = "404", description = "Resource not found", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = ErrorResponse.class))),
+            @APIResponse(responseCode = "500", description = "Internal server error", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = ErrorResponse.class)))
+    })
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Authenticated
-    public Uni<List<TDTO>> getAll() {
-        return service.findAll();
+    public Uni<Response> getAll() {
+        return service.findAll().map(dto -> dto != null ? Response.ok(dto).build()
+                : Response.status(Response.Status.NOT_FOUND).build());
     }
 
+    @APIResponses({
+            @APIResponse(responseCode = "200", description = "Successfully returns the resource by the given id", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = IBaseDTO.class))),
+            @APIResponse(responseCode = "400", description = "Invalid request, bad parameters", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = ErrorResponse.class))),
+            @APIResponse(responseCode = "401", description = "Unauthorized", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = ErrorResponse.class))),
+            @APIResponse(responseCode = "403", description = "Forbidden", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = ErrorResponse.class))),
+            @APIResponse(responseCode = "404", description = "Resource not found", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = ErrorResponse.class))),
+            @APIResponse(responseCode = "500", description = "Internal server error", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = ErrorResponse.class)))
+    })
     @GET
     @Path("/byId/{id}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -65,6 +90,14 @@ public abstract class GenericController<TDTO extends IBaseDTO, TSERVICE extends 
                         : Response.status(Response.Status.NOT_FOUND).build());
     }
 
+    @APIResponses({
+            @APIResponse(responseCode = "201", description = "Successfully created", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = IBaseDTO.class))),
+            @APIResponse(responseCode = "400", description = "Invalid request, bad parameters", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = ErrorResponse.class))),
+            @APIResponse(responseCode = "401", description = "Unauthorized", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = ErrorResponse.class))),
+            @APIResponse(responseCode = "403", description = "Forbidden", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = ErrorResponse.class))),
+            @APIResponse(responseCode = "404", description = "Resource not found", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = ErrorResponse.class))),
+            @APIResponse(responseCode = "500", description = "Internal server error", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = ErrorResponse.class)))
+    })
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
@@ -74,6 +107,14 @@ public abstract class GenericController<TDTO extends IBaseDTO, TSERVICE extends 
                 .map(created -> Response.status(Response.Status.CREATED).entity(created).build());
     }
 
+    @APIResponses({
+            @APIResponse(responseCode = "200", description = "Successfully updated resource with given id", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = IBaseDTO.class))),
+            @APIResponse(responseCode = "400", description = "Invalid request, bad parameters", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = ErrorResponse.class))),
+            @APIResponse(responseCode = "401", description = "Unauthorized", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = ErrorResponse.class))),
+            @APIResponse(responseCode = "403", description = "Forbidden", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = ErrorResponse.class))),
+            @APIResponse(responseCode = "404", description = "Resource not found", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = ErrorResponse.class))),
+            @APIResponse(responseCode = "500", description = "Internal server error", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = ErrorResponse.class)))
+    })
     @PUT
     @Path("/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -85,6 +126,14 @@ public abstract class GenericController<TDTO extends IBaseDTO, TSERVICE extends 
                         : Response.status(Response.Status.NOT_FOUND).build());
     }
 
+    @APIResponses({
+            @APIResponse(responseCode = "204", description = "Successfully deleted resource with given id"),
+            @APIResponse(responseCode = "400", description = "Invalid request, bad parameters", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = ErrorResponse.class))),
+            @APIResponse(responseCode = "401", description = "Unauthorized", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = ErrorResponse.class))),
+            @APIResponse(responseCode = "403", description = "Forbidden", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = ErrorResponse.class))),
+            @APIResponse(responseCode = "404", description = "Resource not found", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = ErrorResponse.class))),
+            @APIResponse(responseCode = "500", description = "Internal server error", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = ErrorResponse.class)))
+    })
     @DELETE
     @Path("/{id}")
     @Authenticated
