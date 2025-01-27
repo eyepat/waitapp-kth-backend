@@ -1,3 +1,3 @@
-# Waitapp backend
+# Waitapp backend v2
 
-Built with quarkus
+Refacored backend with keycloak
