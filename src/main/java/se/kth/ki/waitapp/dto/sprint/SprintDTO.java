@@ -1,23 +1,21 @@
 package se.kth.ki.waitapp.dto.sprint;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.experimental.SuperBuilder;
+import lombok.*;
 import se.kth.ki.waitapp.core.model.sprint.Level;
 import se.kth.ki.waitapp.core.model.sprint.SprintType;
-import se.kth.ki.waitapp.dto.BaseDTO;
+import se.kth.ki.waitapp.dto.IBaseDTO;
 
 @Data
-@EqualsAndHashCode(callSuper = true)
 @AllArgsConstructor
 @NoArgsConstructor
-@SuperBuilder
-public class SprintDTO extends BaseDTO {
+@Builder
+public class SprintDTO implements IBaseDTO {
+    private Long id;
+    private UUID owner;
     @NotNull
     private SprintType sprintType;
     private LocalDate startDate;

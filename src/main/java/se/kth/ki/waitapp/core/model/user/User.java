@@ -3,19 +3,15 @@ package se.kth.ki.waitapp.core.model.user;
 import java.time.LocalDate;
 import java.util.UUID;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.Table;
+import io.quarkus.hibernate.reactive.panache.PanacheEntity;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import se.kth.ki.waitapp.core.model.BaseModel;
+import se.kth.ki.waitapp.core.model.IBaseModel;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
@@ -25,9 +21,10 @@ import se.kth.ki.waitapp.core.model.BaseModel;
 @Entity
 @Builder
 @Table(name = "user_t")
-public class User extends BaseModel {
+public class User extends PanacheEntity implements IBaseModel {
 
     private Long id;
+    @Column(name = "owner", nullable = false, unique = true)
     private UUID owner;
 
     @Column(name = "email", nullable = false, unique = true, length = 1024)

@@ -3,18 +3,15 @@ package se.kth.ki.waitapp.core.model.sprint;
 import java.time.LocalDate;
 import java.util.UUID;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.PrePersist;
+import io.quarkus.hibernate.reactive.panache.PanacheEntity;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import se.kth.ki.waitapp.core.model.BaseModel;
+import se.kth.ki.waitapp.core.model.IBaseModel;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
@@ -23,9 +20,11 @@ import se.kth.ki.waitapp.core.model.BaseModel;
 @NoArgsConstructor
 @Builder
 @Entity
-public class Sprint extends BaseModel {
+public class Sprint extends PanacheEntity implements IBaseModel {
 
     private Long id;
+
+    @Column(name = "owner", nullable = false)
     private UUID owner;
 
     @Enumerated(EnumType.STRING)

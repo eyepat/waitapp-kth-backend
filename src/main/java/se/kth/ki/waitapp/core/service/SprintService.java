@@ -24,7 +24,7 @@ public class SprintService extends GenericService<Sprint, SprintDTO> implements 
 
     @Override
     public Uni<Optional<SprintDTO>> latest() {
-        String sub = (String) jwt.claim("sub").get();
+        String sub = jwt.getSubject();
         if (sub == null || sub.isEmpty()) {
             return Uni.createFrom().failure(new SecurityException("not able to get sub from jwt"));
         }
@@ -41,7 +41,7 @@ public class SprintService extends GenericService<Sprint, SprintDTO> implements 
 
     @Override
     public Uni<Optional<SprintDTO>> latestActive() {
-        String sub = (String) jwt.claim("sub").get();
+        String sub = jwt.getSubject();
         if (sub == null || sub.isEmpty()) {
             return Uni.createFrom().failure(new SecurityException("not able to get sub from jwt"));
         }

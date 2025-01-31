@@ -7,10 +7,11 @@ import org.mapstruct.MappingTarget;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import se.kth.ki.waitapp.core.model.BaseModel;
+import se.kth.ki.waitapp.core.model.IBaseModel;
 import se.kth.ki.waitapp.dto.BaseDTO;
+import se.kth.ki.waitapp.dto.IBaseDTO;
 
-@ApplicationScoped
-public interface IGenericMapper<E extends BaseModel, DTO extends BaseDTO> {
+public interface IGenericMapper<E extends IBaseModel, DTO extends IBaseDTO> {
     @Mapping(target = "id", source = "id")
     DTO toDTO(E entity);
 

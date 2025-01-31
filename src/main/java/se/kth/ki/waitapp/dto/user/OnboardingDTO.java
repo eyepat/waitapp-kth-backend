@@ -1,21 +1,19 @@
 package se.kth.ki.waitapp.dto.user;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.experimental.SuperBuilder;
+import lombok.*;
 import se.kth.ki.waitapp.core.model.user.Gender;
-import se.kth.ki.waitapp.dto.BaseDTO;
+import se.kth.ki.waitapp.dto.IBaseDTO;
 
 @Data
-@EqualsAndHashCode(callSuper = true)
 @AllArgsConstructor
 @NoArgsConstructor
-@SuperBuilder
-public class OnboardingDTO extends BaseDTO {
+@Builder
+public class OnboardingDTO implements IBaseDTO {
+    private Long id;
+    private UUID owner;
     private String email;
     private String fullName;
     private LocalDate BirthDate;
