@@ -21,7 +21,11 @@
         "https://waki.app.cloud.cbh.kth.se/*",
         "https://waki.cloud.cbh.kth.se/",
         "https://waback.cloud.cbh.kth.se/*",
-        "https://waback.cloud.cbh.kth.se/"
+        "https://waback.cloud.cbh.kth.se/",
+        "http://docs.localhost/",
+        "http://docs.localhost/*",
+        "http://wait.localhost/",
+        "http://wait.localhost/*"
       ],
       "protocolMappers": [
         {
