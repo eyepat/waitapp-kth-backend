@@ -25,7 +25,11 @@
         "http://docs.localhost/",
         "http://docs.localhost/*",
         "http://wait.localhost/",
-        "http://wait.localhost/*"
+        "http://wait.localhost/*",
+        "https://wait.app.cloud.cbh.kth.se/*",
+        "https://wait.cloud.cbh.kth.se/",
+        "https://wait-dev.app.cloud.cbh.kth.se/*",
+        "https://wait-dev.cloud.cbh.kth.se/"
       ],
       "protocolMappers": [
         {
