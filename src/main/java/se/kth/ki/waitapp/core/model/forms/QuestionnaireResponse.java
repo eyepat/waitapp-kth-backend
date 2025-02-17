@@ -10,6 +10,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.hl7.fhir.instance.model.api.IBaseResource;
 import se.kth.ki.waitapp.core.model.IBaseFHIRModel;
+import se.kth.ki.waitapp.core.model.IOwnableModel;
 
 import java.util.UUID;
 
@@ -19,7 +20,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Entity
 @Builder
-public class QuestionaireResponse extends PanacheEntity implements IBaseFHIRModel {
+public class QuestionnaireResponse extends PanacheEntity implements IBaseFHIRModel, IOwnableModel {
 
     private Long id;
     @Column(name = "owner", nullable = false)

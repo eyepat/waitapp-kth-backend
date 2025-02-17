@@ -6,15 +6,15 @@ import jakarta.ws.rs.Path;
 
 import org.eclipse.microprofile.openapi.annotations.security.SecurityRequirement;
 import se.kth.ki.waitapp.controller.GenericController;
-import se.kth.ki.waitapp.core.interfaces.service.IQuestionaireService;
-import se.kth.ki.waitapp.dto.forms.QuestionaireDTO;
+import se.kth.ki.waitapp.core.interfaces.service.IQuestionnaireService;
+import se.kth.ki.waitapp.dto.forms.QuestionnaireDTO;
 
-@Path("questionaire")
+@Path("questionnaire")
 @SecurityRequirement(name = "SecurityScheme")
 @Authenticated
-public class QuestionaireController extends GenericController<QuestionaireDTO, IQuestionaireService> {
+public class QuestionnaireController extends GenericController<QuestionnaireDTO, IQuestionnaireService> {
     @Inject
-    public QuestionaireController(IQuestionaireService formService) {
+    public QuestionnaireController(IQuestionnaireService formService) {
         super(formService);
     }
 }

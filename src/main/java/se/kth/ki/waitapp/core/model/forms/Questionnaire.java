@@ -11,19 +11,15 @@ import lombok.NoArgsConstructor;
 import org.hl7.fhir.instance.model.api.IBaseResource;
 import se.kth.ki.waitapp.core.model.IBaseFHIRModel;
 
-import java.util.UUID;
-
 @Data
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Builder
-public class Questionaire extends PanacheEntity implements IBaseFHIRModel {
+public class Questionnaire extends PanacheEntity implements IBaseFHIRModel {
 
     private Long id;
-    @Column(name = "owner", nullable = false)
-    private UUID owner;
 
     @Column(name = "fhir")
     private org.hl7.fhir.r4.model.Questionnaire FHIR;
