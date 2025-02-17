@@ -5,5 +5,4 @@ import se.kth.ki.waitapp.core.interfaces.repository.IUserRepository;
 
 @ApplicationScoped
 public class UserRepository implements IUserRepository {
-
 }

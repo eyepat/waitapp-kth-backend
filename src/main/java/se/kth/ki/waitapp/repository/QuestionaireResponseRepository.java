@@ -5,5 +5,4 @@ import se.kth.ki.waitapp.core.interfaces.repository.IQuestionaireResponseReposit
 
 @ApplicationScoped
 public class QuestionaireResponseRepository implements IQuestionaireResponseRepository {
-
 }

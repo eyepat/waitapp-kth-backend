@@ -16,7 +16,6 @@ import se.kth.ki.waitapp.core.interfaces.service.ISprintService;
 import se.kth.ki.waitapp.dto.sprint.SprintDTO;
 
 @Path("sprint")
-@SecurityRequirement(name = "KeycloakOAuth2")
 @SecurityRequirement(name = "SecurityScheme")
 @Authenticated
 public class SprintController extends GenericController<SprintDTO, ISprintService> {

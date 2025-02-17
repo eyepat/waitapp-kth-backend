@@ -5,5 +5,4 @@ import se.kth.ki.waitapp.core.interfaces.repository.IBloodPressureRepository;
 
 @ApplicationScoped
 public class BloodPressureRepository implements IBloodPressureRepository {
-
 }

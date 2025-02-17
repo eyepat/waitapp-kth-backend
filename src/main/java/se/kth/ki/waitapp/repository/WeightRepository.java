@@ -5,5 +5,4 @@ import se.kth.ki.waitapp.core.interfaces.repository.IWeightRepository;
 
 @ApplicationScoped
 public class WeightRepository implements IWeightRepository {
-
 }

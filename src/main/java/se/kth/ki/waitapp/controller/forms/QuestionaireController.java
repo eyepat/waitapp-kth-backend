@@ -10,7 +10,6 @@ import se.kth.ki.waitapp.core.interfaces.service.IQuestionaireService;
 import se.kth.ki.waitapp.dto.forms.QuestionaireDTO;
 
 @Path("questionaire")
-@SecurityRequirement(name = "KeycloakOAuth2")
 @SecurityRequirement(name = "SecurityScheme")
 @Authenticated
 public class QuestionaireController extends GenericController<QuestionaireDTO, IQuestionaireService> {

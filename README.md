@@ -5,6 +5,6 @@ Refacored backend with keycloak
 ## Development
 
 ```bash
-docker compose --file dev.docker-compose.yml up # start keycloak and postgres
+docker compose --file dev.docker-compose.yml up -d # start keycloak and postgres
 ./mvnw quarkus:dev # start quarkus dev server (hot-reloading)
 ```

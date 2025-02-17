@@ -1,5 +1,8 @@
 package se.kth.ki.waitapp.provider.errors;
 
+import lombok.Builder;
+
+@Builder
 public class ErrorResponse {
     private String error;
     private String message;

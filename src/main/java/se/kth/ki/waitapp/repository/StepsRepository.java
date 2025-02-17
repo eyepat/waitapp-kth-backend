@@ -5,5 +5,4 @@ import se.kth.ki.waitapp.core.interfaces.repository.IStepsRepository;
 
 @ApplicationScoped
 public class StepsRepository implements IStepsRepository {
-
 }

@@ -5,5 +5,4 @@ import se.kth.ki.waitapp.core.interfaces.repository.IRAPARepository;
 
 @ApplicationScoped
 public class RAPARepository implements IRAPARepository {
-
 }

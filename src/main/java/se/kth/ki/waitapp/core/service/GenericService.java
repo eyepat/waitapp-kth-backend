@@ -16,6 +16,7 @@ import se.kth.ki.waitapp.core.interfaces.service.IGenericService;
 import se.kth.ki.waitapp.core.model.IBaseModel;
 import se.kth.ki.waitapp.dto.IBaseDTO;
 import se.kth.ki.waitapp.mappers.IGenericMapper;
+import se.kth.ki.waitapp.util.models.Page;
 
 @NoArgsConstructor
 public abstract class GenericService<T extends IBaseModel, TDTO extends IBaseDTO> implements IGenericService<T, TDTO> {
@@ -57,6 +58,53 @@ public abstract class GenericService<T extends IBaseModel, TDTO extends IBaseDTO
                             .map(entity -> mapper.toDTO(entity))
                             .toList());
         });
+    }
+
+    @Override
+    public Uni<Page<TDTO>> findPaginated(int page, int size, Optional<String> searchQuery) {
+        if (identity == null || identity.isAnonymous()) {
+            return Uni.createFrom().failure(new SecurityException("No identity provided"));
+        }
+
+        String sub = jwt.getSubject();
+        if (sub == null || sub.isEmpty()) {
+            return Uni.createFrom().failure(new SecurityException("Not able to get sub from JWT"));
+        }
+
+        boolean isAdmin = identity.hasRole("admin");
+        String query = isAdmin ? "" : "WHERE owner = ?1";
+        String countQuery = isAdmin ? "" : "WHERE owner = ?1";
+        Object[] params = isAdmin ? new Object[] {} : new Object[] { UUID.fromString(sub) };
+
+        if (searchQuery.isPresent()) {
+            String searchCondition = "(CAST(id AS string) LIKE ? OR owner LIKE ?)";
+            if (isAdmin) {
+                query = "WHERE " + searchCondition;
+                countQuery = "WHERE " + searchCondition;
+                params = new Object[] { "%" + searchQuery.get() + "%", "%" + searchQuery.get() + "%" };
+            } else {
+                query += " AND " + searchCondition;
+                countQuery += " AND " + searchCondition;
+                params = new Object[] { UUID.fromString(sub), "%" + searchQuery.get() + "%",
+                        "%" + searchQuery.get() + "%" };
+            }
+        }
+
+        final String processedQuery = query;
+        final String processedCountQuery = countQuery;
+        final Object[] processedParams = params;
+        final int offset = page * size;
+
+        return sf.withSession(s -> repository.count(processedCountQuery, processedParams)
+                .flatMap(totalElements -> repository.find(processedQuery, processedParams)
+                        .range(offset, offset + size - 1)
+                        .list()
+                        .onItem().transform(entities -> Page.of(entities.stream()
+                                .map(mapper::toDTO)
+                                .toList(),
+                                page,
+                                size,
+                                totalElements))));
     }
 
     @Override

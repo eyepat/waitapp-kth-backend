@@ -5,10 +5,7 @@ import java.util.Optional;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
-import jakarta.enterprise.context.ApplicationScoped;
-import se.kth.ki.waitapp.core.model.BaseModel;
 import se.kth.ki.waitapp.core.model.IBaseModel;
-import se.kth.ki.waitapp.dto.BaseDTO;
 import se.kth.ki.waitapp.dto.IBaseDTO;
 
 public interface IGenericMapper<E extends IBaseModel, DTO extends IBaseDTO> {

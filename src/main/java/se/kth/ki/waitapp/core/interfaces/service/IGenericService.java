@@ -6,11 +6,16 @@ import java.util.Optional;
 import io.smallrye.mutiny.Uni;
 import se.kth.ki.waitapp.core.model.IBaseModel;
 import se.kth.ki.waitapp.dto.IBaseDTO;
+import se.kth.ki.waitapp.util.models.Page;
 
 public interface IGenericService<T extends IBaseModel, TDTO extends IBaseDTO> {
 
     // Retrieve all entities as DTOs
     Uni<List<TDTO>> findAll();
+
+    // Retrieve a paginated list of entities based on page number, size, and search
+    // query
+    Uni<Page<TDTO>> findPaginated(int page, int size, Optional<String> searchQuery);
 
     // Retrieve an entity by its ID, wrapped in Optional
     Uni<Optional<TDTO>> findById(Long id);

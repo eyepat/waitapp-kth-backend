@@ -9,5 +9,4 @@ import se.kth.ki.waitapp.dto.metrics.BloodPressureDTO;
 @Mapper(componentModel = "cdi")
 @ApplicationScoped
 public interface IBloodPressureMapper extends IGenericMapper<BloodPressure, BloodPressureDTO> {
-
 }
