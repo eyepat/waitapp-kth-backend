@@ -1,4 +1,4 @@
-package se.kth.ki.waitapp.controller;
+package se.kth.ki.waitapp.controller.sprint;
 
 import org.eclipse.microprofile.openapi.annotations.parameters.Parameter;
 import org.eclipse.microprofile.openapi.annotations.security.SecurityRequirement;
@@ -12,6 +12,7 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import se.kth.ki.waitapp.controller.GenericController;
 import se.kth.ki.waitapp.core.interfaces.service.ISprintService;
 import se.kth.ki.waitapp.dto.sprint.SprintDTO;
 

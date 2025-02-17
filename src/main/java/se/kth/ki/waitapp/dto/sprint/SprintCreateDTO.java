@@ -1,8 +1,9 @@
 package se.kth.ki.waitapp.dto.sprint;
 
 import java.time.LocalDate;
-import java.util.List;
 import java.util.UUID;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -13,17 +14,18 @@ import se.kth.ki.waitapp.core.model.sprint.SprintType;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class SprintDTO implements ISprintDTO {
+public class SprintCreateDTO implements ISprintDTO {
+    @JsonIgnore
     private Long id;
+    @JsonIgnore
     private UUID owner;
     @NotNull
     private SprintType sprintType;
+    @NotNull
     private LocalDate startDate;
     private LocalDate endDate;
-    private Boolean completed;
+    @NotNull
     private Level level;
-    private Float score;
     @NotNull
     private Long userID;
-    private List<SprintActivityDTO> activities;
 }

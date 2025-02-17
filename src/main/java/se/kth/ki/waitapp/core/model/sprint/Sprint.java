@@ -1,6 +1,7 @@
 package se.kth.ki.waitapp.core.model.sprint;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 import io.quarkus.hibernate.reactive.panache.PanacheEntity;
@@ -50,10 +51,20 @@ public class Sprint extends PanacheEntity implements IBaseModel {
     @Column(name = "userID")
     private Long userID;
 
+    @OneToMany(mappedBy = "sprint", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    private List<SprintActivity> activities;
+
     @PrePersist
     protected void onCreate() {
         if (startDate == null) {
             startDate = LocalDate.now();
         }
+        if (endDate == null) {
+            endDate = startDate.plusDays(10);
+        }
+        if (completed == null) {
+            completed = false;
+        }
     }
+
 }
