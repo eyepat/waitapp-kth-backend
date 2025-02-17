@@ -76,8 +76,11 @@ public abstract class GenericService<T extends IBaseModel, TDTO extends IBaseDTO
         String countQuery = isAdmin ? "" : "WHERE owner = ?1";
         Object[] params = isAdmin ? new Object[] {} : new Object[] { UUID.fromString(sub) };
 
+        System.out.println("ISADMIN: " + isAdmin + ", " + searchQuery.isPresent());
+        int paramc = isAdmin ? 1 : 2;
         if (searchQuery.isPresent()) {
-            String searchCondition = "(CAST(id AS string) LIKE ? OR owner LIKE ?)";
+            String searchCondition = "(CAST(id AS string) LIKE ?" + paramc++ + " OR CAST(owner AS string) LIKE ?"
+                    + paramc++ + ")";
             if (isAdmin) {
                 query = "WHERE " + searchCondition;
                 countQuery = "WHERE " + searchCondition;
@@ -94,6 +97,8 @@ public abstract class GenericService<T extends IBaseModel, TDTO extends IBaseDTO
         final String processedCountQuery = countQuery;
         final Object[] processedParams = params;
         final int offset = page * size;
+
+        System.out.println(processedQuery);
 
         return sf.withSession(s -> repository.count(processedCountQuery, processedParams)
                 .flatMap(totalElements -> repository.find(processedQuery, processedParams)

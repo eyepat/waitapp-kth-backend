@@ -5,8 +5,7 @@ import java.util.UUID;
 import io.quarkus.hibernate.reactive.panache.PanacheEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrePersist;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -42,11 +41,19 @@ public class Task extends PanacheEntity implements IBaseModel {
     @Column(nullable = false)
     private Level level;
 
-    @ManyToOne
-    @JoinColumn(name = "sprint_id", nullable = false)
-    private Sprint sprint;
+    @Column(nullable = false)
+    private TaskVariant variant;
 
     @Column(nullable = false)
     private Boolean active;
 
+    @PrePersist
+    protected void onCreate() {
+        if (active == null) {
+            active = true;
+        }
+        if (owner == null) {
+            owner = UUID.fromString("6804bdb5-fa80-48cb-ac0a-38009fb92841");
+        }
+    }
 }

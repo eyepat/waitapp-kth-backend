@@ -97,7 +97,7 @@
       },
       {
         "name": "admin",
-        "description": "Role for staff members",
+        "description": "Role for admins",
         "composite": false,
         "clientRole": true
       }
@@ -114,9 +114,9 @@
         "userId": "12345",
         "personnummer": "19710930-7905"
       },
-      "realmRoles": ["practitioner"],
+      "realmRoles": ["practitioner", "admin"],
       "clientRoles": {
-        "account": ["patient", "practitioner"]
+        "account": ["patient", "practitioner", "admin"]
       },
       "credentials": [
         {

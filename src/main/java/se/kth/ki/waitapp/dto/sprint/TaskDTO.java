@@ -11,6 +11,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import se.kth.ki.waitapp.core.model.sprint.Level;
 import se.kth.ki.waitapp.core.model.sprint.SprintType;
+import se.kth.ki.waitapp.core.model.sprint.TaskVariant;
 import se.kth.ki.waitapp.dto.IBaseDTO;
 
 @Data
@@ -24,6 +25,7 @@ public class TaskDTO implements IBaseDTO {
     @NotNull
     private SprintType type;
     private Level level;
+    private TaskVariant variant;
     private String title;
     private String description;
     private String videoURL;
