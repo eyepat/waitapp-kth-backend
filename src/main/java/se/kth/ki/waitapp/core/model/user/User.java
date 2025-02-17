@@ -11,7 +11,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import se.kth.ki.waitapp.core.model.IBaseModel;
+import se.kth.ki.waitapp.core.model.IOwnableModel;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
@@ -21,7 +21,7 @@ import se.kth.ki.waitapp.core.model.IBaseModel;
 @Entity
 @Builder
 @Table(name = "user_t")
-public class User extends PanacheEntity implements IBaseModel {
+public class User extends PanacheEntity implements IOwnableModel {
 
     private Long id;
     @Column(name = "owner", nullable = false, unique = true)

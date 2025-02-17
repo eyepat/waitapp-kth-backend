@@ -5,13 +5,13 @@ import java.util.UUID;
 
 import lombok.*;
 import se.kth.ki.waitapp.core.model.user.Gender;
-import se.kth.ki.waitapp.dto.IBaseDTO;
+import se.kth.ki.waitapp.dto.IOwnableDTO;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class OnboardingDTO implements IBaseDTO {
+public class OnboardingDTO implements IOwnableDTO {
     private Long id;
     private UUID owner;
     private String email;

@@ -15,7 +15,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import se.kth.ki.waitapp.core.model.IBaseModel;
+import se.kth.ki.waitapp.core.model.IOwnableModel;
 
 @Entity
 @Data
@@ -24,7 +24,7 @@ import se.kth.ki.waitapp.core.model.IBaseModel;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class SprintActivity extends PanacheEntity implements IBaseModel {
+public class SprintActivity extends PanacheEntity implements IOwnableModel {
 
     private Long id;
 

@@ -7,13 +7,13 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import se.kth.ki.waitapp.dto.IBaseDTO;
+import se.kth.ki.waitapp.dto.IOwnableDTO;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class SprintActivityDTO implements IBaseDTO {
+public class SprintActivityDTO implements IOwnableDTO {
     private Long id;
     private UUID owner;
     private TaskDTO task;

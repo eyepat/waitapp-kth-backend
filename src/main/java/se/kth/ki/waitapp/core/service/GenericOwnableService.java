@@ -2,38 +2,24 @@ package se.kth.ki.waitapp.core.service;
 
 import java.util.List;
 import java.util.Optional;
-
-import org.eclipse.microprofile.jwt.JsonWebToken;
-import org.hibernate.reactive.mutiny.Mutiny;
+import java.util.UUID;
 
 import io.quarkus.security.identity.SecurityIdentity;
 import io.smallrye.mutiny.Uni;
-import jakarta.inject.Inject;
-import lombok.NoArgsConstructor;
 import se.kth.ki.waitapp.core.interfaces.repository.IGenericRepository;
-import se.kth.ki.waitapp.core.interfaces.service.IGenericService;
-import se.kth.ki.waitapp.core.model.IBaseModel;
-import se.kth.ki.waitapp.dto.IBaseDTO;
+import se.kth.ki.waitapp.core.interfaces.service.IGenericOwnableService;
+import se.kth.ki.waitapp.core.model.IOwnableModel;
+import se.kth.ki.waitapp.dto.IOwnableDTO;
 import se.kth.ki.waitapp.mappers.IGenericMapper;
 import se.kth.ki.waitapp.util.models.Page;
 
-@NoArgsConstructor
-public abstract class GenericService<T extends IBaseModel, TDTO extends IBaseDTO> implements IGenericService<T, TDTO> {
+public class GenericOwnableService<T extends IOwnableModel, TDTO extends IOwnableDTO>
+        extends GenericService<T, TDTO>
+        implements IGenericOwnableService<T, TDTO> {
 
-    protected SecurityIdentity identity;
-    protected IGenericMapper<T, TDTO> mapper;
-    protected IGenericRepository<T> repository;
-
-    @Inject
-    JsonWebToken jwt;
-
-    @Inject
-    Mutiny.SessionFactory sf;
-
-    public GenericService(IGenericMapper<T, TDTO> mapper, IGenericRepository<T> repository, SecurityIdentity identity) {
-        this.mapper = mapper;
-        this.repository = repository;
-        this.identity = identity;
+    public GenericOwnableService(IGenericMapper<T, TDTO> mapper, IGenericRepository<T> repository,
+            SecurityIdentity identity) {
+        super(mapper, repository, identity);
     }
 
     @Override
@@ -42,9 +28,16 @@ public abstract class GenericService<T extends IBaseModel, TDTO extends IBaseDTO
             return Uni.createFrom().failure(new SecurityException("No identity provided"));
         }
 
+        String sub = jwt.getSubject();
+        if (sub == null || sub.isEmpty()) {
+            return Uni.createFrom().failure(new SecurityException("not able to get sub from jwt"));
+        }
+        var owner = UUID.fromString(sub);
         return sf.withSession((s) -> {
-            return repository.findAll().list()
+            return repository.find("WHERE owner = ?1", owner).list()
                     .onItem().transform(entities -> entities.stream().map(e -> {
+                        System.out
+                                .println("Processing entity of type: " + e.getClass().getSimpleName());
                         return e;
                     })
                             .map(entity -> mapper.toDTO(entity))
@@ -58,18 +51,39 @@ public abstract class GenericService<T extends IBaseModel, TDTO extends IBaseDTO
             return Uni.createFrom().failure(new SecurityException("No identity provided"));
         }
 
-        int paramc = 1;
+        String sub = jwt.getSubject();
+        if (sub == null || sub.isEmpty()) {
+            return Uni.createFrom().failure(new SecurityException("Not able to get sub from JWT"));
+        }
 
-        String searchCondition = "(CAST(id AS string) LIKE ?" + paramc++ + " OR CAST(owner AS string) LIKE ?"
-                + paramc++ + ")";
+        boolean isAdmin = identity.hasRole("admin");
+        String query = isAdmin ? "" : "WHERE owner = ?1";
+        String countQuery = isAdmin ? "" : "WHERE owner = ?1";
+        Object[] params = isAdmin ? new Object[] {} : new Object[] { UUID.fromString(sub) };
 
-        final String processedQuery = "WHERE " + searchCondition;
-        final String processedCountQuery = "WHERE " + searchCondition;
-        final Object[] processedParams = searchQuery.isPresent()
-                ? new Object[] { "%" + searchQuery.get() + "%",
-                        "%" + searchQuery.get() + "%" }
-                : new Object[] {};
+        System.out.println("ISADMIN: " + isAdmin + ", " + searchQuery.isPresent());
+        int paramc = isAdmin ? 1 : 2;
+        if (searchQuery.isPresent()) {
+            String searchCondition = "(CAST(id AS string) LIKE ?" + paramc++ + " OR CAST(owner AS string) LIKE ?"
+                    + paramc++ + ")";
+            if (isAdmin) {
+                query = "WHERE " + searchCondition;
+                countQuery = "WHERE " + searchCondition;
+                params = new Object[] { "%" + searchQuery.get() + "%", "%" + searchQuery.get() + "%" };
+            } else {
+                query += " AND " + searchCondition;
+                countQuery += " AND " + searchCondition;
+                params = new Object[] { UUID.fromString(sub), "%" + searchQuery.get() + "%",
+                        "%" + searchQuery.get() + "%" };
+            }
+        }
+
+        final String processedQuery = query;
+        final String processedCountQuery = countQuery;
+        final Object[] processedParams = params;
         final int offset = page * size;
+
+        System.out.println(processedQuery);
 
         return sf.withSession(s -> repository.count(processedCountQuery, processedParams)
                 .flatMap(totalElements -> repository.find(processedQuery, processedParams)
@@ -89,8 +103,13 @@ public abstract class GenericService<T extends IBaseModel, TDTO extends IBaseDTO
             return Uni.createFrom().failure(new SecurityException("No identity provided"));
         }
 
+        String sub = jwt.getSubject();
+        if (sub == null || sub.isEmpty()) {
+            return Uni.createFrom().failure(new SecurityException("not able to get sub from jwt"));
+        }
+        var owner = UUID.fromString(sub);
         return sf.withSession((s) -> {
-            return repository.find("WHERE id = ?1", id).firstResult()
+            return repository.find("WHERE owner = ?1 AND id = ?2", owner, id).firstResult()
                     .onItem()
                     .transform(entity -> {
                         if (entity == null || !entity.isPersistent()) {
@@ -108,11 +127,8 @@ public abstract class GenericService<T extends IBaseModel, TDTO extends IBaseDTO
         }
         dto.setId(null);
         T entity = mapper.toEntity(dto);
-
-        if (!identity.hasRole("admin")) {
-            return Uni.createFrom()
-                    .failure(new SecurityException("Not authorized to create this resource"));
-        }
+        String sub = jwt.getClaim("sub");
+        entity.setOwner(UUID.fromString(sub));
 
         return sf.withSession((s) -> {
             return repository.persistAndFlush(entity)
@@ -130,15 +146,21 @@ public abstract class GenericService<T extends IBaseModel, TDTO extends IBaseDTO
         if (identity == null || identity.isAnonymous()) {
             return Uni.createFrom().failure(new SecurityException("No identity provided"));
         }
-        dto.setId(id);
 
+        String sub = jwt.getSubject();
+        if (sub == null || sub.isEmpty()) {
+            return Uni.createFrom().failure(new SecurityException("not able to get sub from jwt"));
+        }
+        var owner = UUID.fromString(sub);
+        dto.setId(id);
+        dto.setOwner(owner);
         return sf.withSession((s) -> {
-            return repository.find("WHERE id = ?1", id).firstResult()
+            return repository.find("WHERE owner = ?1 AND id = ?2", owner, id).firstResult()
                     .onItem().transformToUni(existing -> {
                         if (existing == null) {
                             return Uni.createFrom().item(Optional.empty());
                         }
-                        if (!identity.hasRole("admin")) {
+                        if (!owner.equals((existing).getOwner()) && !identity.hasRole("admin")) {
                             return Uni.createFrom()
                                     .failure(new SecurityException("Not authorized to update this resource"));
                         }
@@ -155,13 +177,13 @@ public abstract class GenericService<T extends IBaseModel, TDTO extends IBaseDTO
             return Uni.createFrom().failure(new SecurityException("No identity provided"));
         }
 
-        if (!identity.hasRole("admin")) {
-            return Uni.createFrom()
-                    .failure(new SecurityException("Not authorized to delete this resource"));
+        String sub = jwt.getSubject();
+        if (sub == null || sub.isEmpty()) {
+            return Uni.createFrom().failure(new SecurityException("not able to get sub from jwt"));
         }
-
+        var owner = UUID.fromString(sub);
         return sf.withSession((s) -> {
-            return repository.delete("WHERE id = ?1", id)
+            return repository.delete("WHERE owner = ?1 AND id = ?2", owner, id)
                     .onItem().transform(deletedCount -> deletedCount > 0);
         });
     }
@@ -172,8 +194,13 @@ public abstract class GenericService<T extends IBaseModel, TDTO extends IBaseDTO
             return Uni.createFrom().failure(new SecurityException("No identity provided"));
         }
 
+        String sub = jwt.getSubject();
+        if (sub == null || sub.isEmpty()) {
+            return Uni.createFrom().failure(new SecurityException("not able to get sub from jwt"));
+        }
+        var owner = UUID.fromString(sub);
         return sf.withSession((s) -> {
-            return repository.count("WHERE id = ?1", id)
+            return repository.count("WHERE owner = ?1 AND id = ?2", owner, id)
                     .map(count -> count > 0);
         });
     }

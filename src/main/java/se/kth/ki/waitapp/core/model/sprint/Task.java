@@ -25,9 +25,6 @@ public class Task extends PanacheEntity implements IBaseModel {
 
     private Long id;
 
-    @Column(name = "owner", nullable = false)
-    private UUID owner;
-
     @Column(nullable = false)
     private String title;
 
@@ -51,9 +48,6 @@ public class Task extends PanacheEntity implements IBaseModel {
     protected void onCreate() {
         if (active == null) {
             active = true;
-        }
-        if (owner == null) {
-            owner = UUID.fromString("6804bdb5-fa80-48cb-ac0a-38009fb92841");
         }
     }
 }

@@ -13,6 +13,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import se.kth.ki.waitapp.core.model.IBaseModel;
+import se.kth.ki.waitapp.core.model.IOwnableModel;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
@@ -21,7 +22,7 @@ import se.kth.ki.waitapp.core.model.IBaseModel;
 @NoArgsConstructor
 @Builder
 @Entity
-public class Sprint extends PanacheEntity implements IBaseModel {
+public class Sprint extends PanacheEntity implements IOwnableModel {
 
     private Long id;
 

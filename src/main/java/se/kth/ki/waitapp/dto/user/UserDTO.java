@@ -7,13 +7,13 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import se.kth.ki.waitapp.core.model.user.Gender;
-import se.kth.ki.waitapp.dto.IBaseDTO;
+import se.kth.ki.waitapp.dto.IOwnableDTO;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class UserDTO implements IBaseDTO {
+public class UserDTO implements IOwnableDTO {
     private Long id;
     private UUID owner;
     @NotNull

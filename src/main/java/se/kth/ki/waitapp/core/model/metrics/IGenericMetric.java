@@ -1,8 +1,8 @@
 package se.kth.ki.waitapp.core.model.metrics;
 
-import se.kth.ki.waitapp.core.model.IBaseModel;
+import se.kth.ki.waitapp.core.model.IOwnableModel;
 
-public interface IGenericMetric<T> extends IBaseModel {
+public interface IGenericMetric<T> extends IOwnableModel {
     T getValue();
 
     void setValue(T value);

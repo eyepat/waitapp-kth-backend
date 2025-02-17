@@ -1,7 +1,5 @@
 package se.kth.ki.waitapp.core.model.recipe;
 
-import java.util.UUID;
-
 import io.quarkus.hibernate.reactive.panache.PanacheEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -22,10 +20,11 @@ import se.kth.ki.waitapp.core.model.IBaseModel;
 @Entity
 public class Recipe extends PanacheEntity implements IBaseModel {
     private Long id;
-    private UUID owner;
+    @Column(length = 1024)
     private String URL;
     private String title;
     private String description;
+    @Column(length = 1024)
     private String imageURL;
     private Integer cookingTime;
 }

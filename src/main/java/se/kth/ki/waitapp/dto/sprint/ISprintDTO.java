@@ -4,9 +4,9 @@ import java.time.LocalDate;
 
 import se.kth.ki.waitapp.core.model.sprint.Level;
 import se.kth.ki.waitapp.core.model.sprint.SprintType;
-import se.kth.ki.waitapp.dto.IBaseDTO;
+import se.kth.ki.waitapp.dto.IOwnableDTO;
 
-public interface ISprintDTO extends IBaseDTO {
+public interface ISprintDTO extends IOwnableDTO {
     SprintType getSprintType();
 
     void setSprintType(SprintType sprintType);

@@ -8,13 +8,13 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
-import se.kth.ki.waitapp.dto.IBaseDTO;
+import se.kth.ki.waitapp.dto.IOwnableDTO;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @SuperBuilder
-public abstract class GenericMetricDTO<T> implements IBaseDTO {
+public abstract class GenericMetricDTO<T> implements IOwnableDTO {
     private Long id;
     private UUID owner;
     @NotNull

@@ -1,9 +1,5 @@
 package se.kth.ki.waitapp.dto.sprint;
 
-import java.util.UUID;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,8 +16,6 @@ import se.kth.ki.waitapp.dto.IBaseDTO;
 @Builder
 public class TaskDTO implements IBaseDTO {
     private Long id;
-    @JsonIgnore
-    private UUID owner;
     @NotNull
     private SprintType type;
     private Level level;
