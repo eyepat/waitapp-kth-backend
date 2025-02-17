@@ -10,12 +10,12 @@ import se.kth.ki.waitapp.core.interfaces.repository.IGenericMetricRepository;
 import se.kth.ki.waitapp.core.interfaces.service.IGenericMetricService;
 import se.kth.ki.waitapp.core.model.metrics.IGenericMetric;
 import se.kth.ki.waitapp.core.model.user.User;
-import se.kth.ki.waitapp.dto.IBaseDTO;
+import se.kth.ki.waitapp.dto.IOwnableDTO;
 import se.kth.ki.waitapp.mappers.IGenericMapper;
 
 @NoArgsConstructor
-public abstract class GenericMetricService<T extends IGenericMetric<?>, TDTO extends IBaseDTO>
-        extends GenericService<T, TDTO>
+public abstract class GenericMetricService<T extends IGenericMetric<?>, TDTO extends IOwnableDTO>
+        extends GenericOwnableService<T, TDTO>
         implements IGenericMetricService<T, TDTO> {
 
     public GenericMetricService(IGenericMapper<T, TDTO> mapper, IGenericMetricRepository<T> repository,

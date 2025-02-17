@@ -24,7 +24,7 @@ import se.kth.ki.waitapp.mappers.IWaistSizeMapper;
 import se.kth.ki.waitapp.mappers.IWeightMapper;
 
 @ApplicationScoped
-public class UserService extends GenericService<User, UserDTO> implements IUserService {
+public class UserService extends GenericOwnableService<User, UserDTO> implements IUserService {
 
         @Inject
         IHeightMapper heightMapper;

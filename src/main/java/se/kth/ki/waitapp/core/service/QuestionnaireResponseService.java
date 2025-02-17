@@ -10,7 +10,7 @@ import se.kth.ki.waitapp.dto.forms.QuestionnaireResponseDTO;
 import se.kth.ki.waitapp.mappers.IQuestionnaireResponseMapper;
 
 @ApplicationScoped
-public class QuestionnaireResponseService extends GenericFHIRService<QuestionnaireResponse, QuestionnaireResponseDTO>
+public class QuestionnaireResponseService extends GenericOwnableService<QuestionnaireResponse, QuestionnaireResponseDTO>
         implements IQuestionnaireResponseService {
 
     @Inject

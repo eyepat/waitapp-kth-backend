@@ -18,7 +18,7 @@ import se.kth.ki.waitapp.dto.sprint.SprintDTO;
 import se.kth.ki.waitapp.mappers.ISprintMapper;
 
 @ApplicationScoped
-public class SprintService extends GenericService<Sprint, SprintDTO> implements ISprintService {
+public class SprintService extends GenericOwnableService<Sprint, SprintDTO> implements ISprintService {
 
     @Inject
     ISprintActivityService sprintActivityService;

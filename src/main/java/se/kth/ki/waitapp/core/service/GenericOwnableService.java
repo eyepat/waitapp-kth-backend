@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import io.quarkus.security.identity.SecurityIdentity;
 import io.smallrye.mutiny.Uni;
+import lombok.NoArgsConstructor;
 import se.kth.ki.waitapp.core.interfaces.repository.IGenericRepository;
 import se.kth.ki.waitapp.core.interfaces.service.IGenericOwnableService;
 import se.kth.ki.waitapp.core.model.IOwnableModel;
@@ -13,7 +14,8 @@ import se.kth.ki.waitapp.dto.IOwnableDTO;
 import se.kth.ki.waitapp.mappers.IGenericMapper;
 import se.kth.ki.waitapp.util.models.Page;
 
-public class GenericOwnableService<T extends IOwnableModel, TDTO extends IOwnableDTO>
+@NoArgsConstructor
+public abstract class GenericOwnableService<T extends IOwnableModel, TDTO extends IOwnableDTO>
         extends GenericService<T, TDTO>
         implements IGenericOwnableService<T, TDTO> {
 

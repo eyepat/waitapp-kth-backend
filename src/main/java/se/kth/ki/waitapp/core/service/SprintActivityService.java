@@ -26,112 +26,157 @@ import se.kth.ki.waitapp.dto.sprint.SprintActivityDTO;
 import se.kth.ki.waitapp.mappers.ISprintActivityMapper;
 
 @ApplicationScoped
-public class SprintActivityService extends GenericService<SprintActivity, SprintActivityDTO>
-        implements ISprintActivityService {
+public class SprintActivityService extends GenericOwnableService<SprintActivity, SprintActivityDTO>
+                implements ISprintActivityService {
 
-    @Inject
-    ITaskRepository taskRepository;
+        @Inject
+        ITaskRepository taskRepository;
 
-    private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
+        private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
-    @Inject
-    public SprintActivityService(ISprintActivityMapper mapper, ISprintActivityRepository repository,
-            SecurityIdentity identity) {
-        super(mapper, repository, identity);
-    }
+        @Inject
+        public SprintActivityService(ISprintActivityMapper mapper, ISprintActivityRepository repository,
+                        SecurityIdentity identity) {
+                super(mapper, repository, identity);
+        }
 
-    // TODO: look at previous activities to make sure the user gets activities that
-    // match
-    // TODO: make it work smarter, needs to balance so there are rest tasks too
-    // (Variant is REST) and order them
-    // TODO: make it based on the users needs
-    // Parallel didnt work, got ("Illegal pop() with non-matching
-    // JdbcValuesSourceProcessingState), hence the sequential querying :(
-    @Transactional
-    @WithTransaction
-    @Override
-    public Uni<List<SprintActivity>> getSprintActivitiesForUser(UUID userID, Level sprintLevel, SprintType sprintType,
-            int amount) {
-        return taskRepository
-                .find("level = ?1 and type = ?2 and variant != ?3 and active = true", sprintLevel, sprintType,
-                        TaskVariant.REST)
-                .page(0, amount)
-                .list()
-                .onFailure().invoke(e -> LOGGER.error("Error fetching active tasks: ", e))
-                .flatMap(activeTasks -> taskRepository
-                        .find("level = ?1 and type = ?2 and variant = ?3 and active = true", sprintLevel, sprintType,
-                                TaskVariant.REST)
-                        .page(0, amount)
-                        .list()
-                        .onFailure().invoke(e -> LOGGER.error("Error fetching rest tasks: ", e))
-                        .flatMap(restTasks -> repository
-                                .find("owner = ?1 and completed = true", userID)
+        // TODO: look at previous activities to make sure the user gets activities that
+        // match
+        // TODO: make it work smarter, needs to balance so there are rest tasks too
+        // (Variant is REST) and order them
+        // TODO: make it based on the users needs
+        // Parallel didnt work, got ("Illegal pop() with non-matching
+        // JdbcValuesSourceProcessingState), hence the sequential querying :(
+        @Transactional
+        @WithTransaction
+        @Override
+        public Uni<List<SprintActivity>> getSprintActivitiesForUser(UUID userID, Level sprintLevel,
+                        SprintType sprintType,
+                        int amount) {
+                return taskRepository
+                                .find("level = ?1 and type = ?2 and variant != ?3 and active = true", sprintLevel,
+                                                sprintType,
+                                                TaskVariant.REST)
+                                .page(0, amount)
                                 .list()
-                                .onFailure().invoke(e -> LOGGER.error("Error fetching previous activities: ", e))
-                                .onFailure().recoverWithItem(List.of())
-                                .map(previousActivities -> {
-                                    // Step 5: Filter tasks to exclude those that have already been completed
-                                    List<Task> availableActiveTasks = activeTasks.stream()
-                                            .filter(task -> previousActivities.stream()
-                                                    .noneMatch(activity -> activity.getTask().equals(task)))
-                                            .toList();
+                                .onFailure().invoke(e -> LOGGER.error("Error fetching active tasks: ", e))
+                                .flatMap(activeTasks -> taskRepository
+                                                .find("level = ?1 and type = ?2 and variant = ?3 and active = true",
+                                                                sprintLevel, sprintType,
+                                                                TaskVariant.REST)
+                                                .page(0, amount)
+                                                .list()
+                                                .onFailure().invoke(e -> LOGGER.error("Error fetching rest tasks: ", e))
+                                                .flatMap(restTasks -> repository
+                                                                .find("owner = ?1 and completed = true", userID)
+                                                                .list()
+                                                                .onFailure()
+                                                                .invoke(e -> LOGGER.error(
+                                                                                "Error fetching previous activities: ",
+                                                                                e))
+                                                                .onFailure().recoverWithItem(List.of())
+                                                                .map(previousActivities -> {
+                                                                        // Step 5: Filter tasks to exclude those that
+                                                                        // have already been completed
+                                                                        List<Task> availableActiveTasks = activeTasks
+                                                                                        .stream()
+                                                                                        .filter(task -> previousActivities
+                                                                                                        .stream()
+                                                                                                        .noneMatch(activity -> activity
+                                                                                                                        .getTask()
+                                                                                                                        .equals(task)))
+                                                                                        .toList();
 
-                                    List<Task> availableRestTasks = restTasks.stream()
-                                            .filter(task -> previousActivities.stream()
-                                                    .noneMatch(activity -> activity.getTask().equals(task)))
-                                            .toList();
+                                                                        List<Task> availableRestTasks = restTasks
+                                                                                        .stream()
+                                                                                        .filter(task -> previousActivities
+                                                                                                        .stream()
+                                                                                                        .noneMatch(activity -> activity
+                                                                                                                        .getTask()
+                                                                                                                        .equals(task)))
+                                                                                        .toList();
 
-                                    // Balance tasks with REST tasks (Variant.REST)
-                                    int normalTasksNeeded = amount - Math.min(availableRestTasks.size(), amount);
-                                    normalTasksNeeded = Math.min(normalTasksNeeded, availableActiveTasks.size());
+                                                                        // Balance tasks with REST tasks (Variant.REST)
+                                                                        int normalTasksNeeded = amount - Math.min(
+                                                                                        availableRestTasks.size(),
+                                                                                        amount);
+                                                                        normalTasksNeeded = Math.min(normalTasksNeeded,
+                                                                                        availableActiveTasks.size());
 
-                                    // Step 6: Prepare SprintActivity list
-                                    List<SprintActivity> sprintActivities = new ArrayList<>();
-                                    sprintActivities.addAll(availableActiveTasks.stream()
-                                            .limit(normalTasksNeeded)
-                                            .map(task -> SprintActivity.builder()
-                                                    .owner(userID).task(task).assignedDate(LocalDate.now())
-                                                    .completed(false)
-                                                    .build())
-                                            .toList());
+                                                                        // Step 6: Prepare SprintActivity list
+                                                                        List<SprintActivity> sprintActivities = new ArrayList<>();
+                                                                        sprintActivities.addAll(availableActiveTasks
+                                                                                        .stream()
+                                                                                        .limit(normalTasksNeeded)
+                                                                                        .map(task -> SprintActivity
+                                                                                                        .builder()
+                                                                                                        .owner(userID)
+                                                                                                        .task(task)
+                                                                                                        .assignedDate(LocalDate
+                                                                                                                        .now())
+                                                                                                        .completed(false)
+                                                                                                        .build())
+                                                                                        .toList());
 
-                                    // Step 7: Add REST tasks
-                                    int restCount = Math.min(availableRestTasks.size(),
-                                            amount - sprintActivities.size());
-                                    sprintActivities.addAll(availableRestTasks.stream()
-                                            .limit(restCount)
-                                            .map(task -> SprintActivity.builder()
-                                                    .owner(userID).task(task).assignedDate(LocalDate.now())
-                                                    .completed(false)
-                                                    .build())
-                                            .toList());
+                                                                        // Step 7: Add REST tasks
+                                                                        int restCount = Math.min(
+                                                                                        availableRestTasks.size(),
+                                                                                        amount - sprintActivities
+                                                                                                        .size());
+                                                                        sprintActivities.addAll(availableRestTasks
+                                                                                        .stream()
+                                                                                        .limit(restCount)
+                                                                                        .map(task -> SprintActivity
+                                                                                                        .builder()
+                                                                                                        .owner(userID)
+                                                                                                        .task(task)
+                                                                                                        .assignedDate(LocalDate
+                                                                                                                        .now())
+                                                                                                        .completed(false)
+                                                                                                        .build())
+                                                                                        .toList());
 
-                                    // Step 8: Ensure enough tasks are available, refill if needed
-                                    if (sprintActivities.size() < amount) {
-                                        List<Task> remainingTasks = activeTasks.stream()
-                                                .filter(task -> !sprintActivities.stream()
-                                                        .anyMatch(activity -> activity.getTask().equals(task)))
-                                                .toList();
-                                        sprintActivities.addAll(remainingTasks.stream()
-                                                .limit(amount - sprintActivities.size())
-                                                .map(task -> SprintActivity.builder()
-                                                        .owner(userID).task(task).assignedDate(LocalDate.now())
-                                                        .completed(false)
-                                                        .build())
-                                                .toList());
-                                    }
+                                                                        // Step 8: Ensure enough tasks are available,
+                                                                        // refill if needed
+                                                                        if (sprintActivities.size() < amount) {
+                                                                                List<Task> remainingTasks = activeTasks
+                                                                                                .stream()
+                                                                                                .filter(task -> !sprintActivities
+                                                                                                                .stream()
+                                                                                                                .anyMatch(activity -> activity
+                                                                                                                                .getTask()
+                                                                                                                                .equals(task)))
+                                                                                                .toList();
+                                                                                sprintActivities.addAll(remainingTasks
+                                                                                                .stream()
+                                                                                                .limit(amount - sprintActivities
+                                                                                                                .size())
+                                                                                                .map(task -> SprintActivity
+                                                                                                                .builder()
+                                                                                                                .owner(userID)
+                                                                                                                .task(task)
+                                                                                                                .assignedDate(LocalDate
+                                                                                                                                .now())
+                                                                                                                .completed(false)
+                                                                                                                .build())
+                                                                                                .toList());
+                                                                        }
 
-                                    if (sprintActivities.size() < amount) {
-                                        LOGGER.error("Unable to fill requested activities, requested " + amount
-                                                + ", but only got " + sprintActivities.size());
-                                    }
+                                                                        if (sprintActivities.size() < amount) {
+                                                                                LOGGER.error("Unable to fill requested activities, requested "
+                                                                                                + amount
+                                                                                                + ", but only got "
+                                                                                                + sprintActivities
+                                                                                                                .size());
+                                                                        }
 
-                                    if (sprintActivities.size() == 0) {
-                                        throw new IllegalStateException("Unable to find any tasks");
-                                    }
+                                                                        if (sprintActivities.size() == 0) {
+                                                                                throw new IllegalStateException(
+                                                                                                "Unable to find any tasks");
+                                                                        }
 
-                                    return sprintActivities;
-                                })));
-    }
+                                                                        return sprintActivities;
+                                                                })));
+        }
 
 }
