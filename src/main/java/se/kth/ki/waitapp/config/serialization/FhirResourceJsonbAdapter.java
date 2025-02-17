@@ -2,6 +2,7 @@ package se.kth.ki.waitapp.config.serialization;
 
 import org.hl7.fhir.instance.model.api.IBaseResource;
 import ca.uhn.fhir.context.FhirContext;
+import jakarta.inject.Inject;
 import jakarta.json.Json;
 import jakarta.json.JsonObject;
 import jakarta.json.bind.adapter.JsonbAdapter;
@@ -9,7 +10,8 @@ import java.io.StringReader;
 
 public class FhirResourceJsonbAdapter implements JsonbAdapter<IBaseResource, JsonObject> {
 
-    private static final FhirContext fhirContext = FhirContext.forR4();
+    @Inject
+    FhirContext fhirContext;
 
     @Override
     public JsonObject adaptToJson(IBaseResource resource) throws Exception {
