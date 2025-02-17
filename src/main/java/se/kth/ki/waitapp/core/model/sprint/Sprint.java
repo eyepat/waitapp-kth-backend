@@ -12,7 +12,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import se.kth.ki.waitapp.core.model.IBaseModel;
 import se.kth.ki.waitapp.core.model.IOwnableModel;
 
 @Data
