@@ -59,5 +59,12 @@ public class Sprint extends PanacheEntity implements IBaseModel {
         if (startDate == null) {
             startDate = LocalDate.now();
         }
+        if (endDate == null) {
+            endDate = startDate.plusDays(10);
+        }
+        if (completed == null) {
+            completed = false;
+        }
     }
+
 }
