@@ -1,11 +1,14 @@
 package se.kth.ki.waitapp.core.model.sprint;
 
 import java.time.LocalDate;
-import java.util.List;
 import java.util.UUID;
 
 import io.quarkus.hibernate.reactive.panache.PanacheEntity;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrePersist;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,50 +17,42 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import se.kth.ki.waitapp.core.model.IBaseModel;
 
+@Entity
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Entity
-public class Sprint extends PanacheEntity implements IBaseModel {
+public class SprintActivity extends PanacheEntity implements IBaseModel {
 
     private Long id;
 
     @Column(name = "owner", nullable = false)
     private UUID owner;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private SprintType sprintType;
+    @ManyToOne
+    @JoinColumn(name = "sprint_id", nullable = false)
+    private Sprint sprint;
 
-    @Column(length = 11)
-    private LocalDate startDate;
-
-    @Column(length = 11)
-    private LocalDate endDate;
+    @ManyToOne
+    @JoinColumn(name = "task_id", nullable = false)
+    private Task task;
 
     @Column(nullable = false)
     private Boolean completed;
 
-    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Level level;
-
-    @Column(name = "score")
-    private Float score;
-
-    @Column(name = "userID")
-    private Long userID;
-
-    @OneToMany(mappedBy = "sprint", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    private List<SprintActivity> activities;
+    private LocalDate assignedDate;
 
     @PrePersist
     protected void onCreate() {
-        if (startDate == null) {
-            startDate = LocalDate.now();
+        if (assignedDate == null) {
+            assignedDate = LocalDate.now();
+        }
+
+        if (completed == null) {
+            completed = false;
         }
     }
 }

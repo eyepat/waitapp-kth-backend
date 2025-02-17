@@ -1,11 +1,14 @@
 package se.kth.ki.waitapp.dto.sprint;
 
-import java.time.LocalDate;
-import java.util.List;
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.validation.constraints.NotNull;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import se.kth.ki.waitapp.core.model.sprint.Level;
 import se.kth.ki.waitapp.core.model.sprint.SprintType;
 import se.kth.ki.waitapp.dto.IBaseDTO;
@@ -14,17 +17,15 @@ import se.kth.ki.waitapp.dto.IBaseDTO;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class SprintDTO implements IBaseDTO {
+public class TaskDTO implements IBaseDTO {
     private Long id;
+    @JsonIgnore
     private UUID owner;
     @NotNull
-    private SprintType sprintType;
-    private LocalDate startDate;
-    private LocalDate endDate;
-    private Boolean completed;
+    private SprintType type;
     private Level level;
-    private Float score;
-    @NotNull
-    private Long userID;
-    private List<SprintActivityDTO> activities;
+    private String title;
+    private String description;
+    private String videoURL;
+    private Boolean active;
 }
