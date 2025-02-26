@@ -1,13 +1,26 @@
 package se.kth.ki.waitapp.dto.metrics;
 
+import java.time.LocalDateTime;
+import java.util.UUID;
+
+import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.experimental.SuperBuilder;
 
 @Data
-@EqualsAndHashCode(callSuper = true)
-@SuperBuilder
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
-public class WaistSizeDTO extends GenericMetricDTO<Integer> {
+public class WaistSizeDTO implements IGenericMetricDTO<Integer> {
+    private Long id;
+    private UUID owner;
+    @NotNull
+    private Long userID;
+    @NotNull
+    private Long sprintID;
+    @NotNull
+    private LocalDateTime timestamp;
+    private Integer value;
 }

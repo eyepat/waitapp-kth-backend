@@ -15,10 +15,10 @@ import jakarta.ws.rs.core.Response;
 import se.kth.ki.waitapp.controller.GenericController;
 import se.kth.ki.waitapp.core.interfaces.service.IGenericMetricService;
 import se.kth.ki.waitapp.dto.IBaseDTO;
-import se.kth.ki.waitapp.dto.IOwnableDTO;
+import se.kth.ki.waitapp.dto.metrics.IGenericMetricDTO;
 import se.kth.ki.waitapp.provider.errors.ErrorResponse;
 
-public abstract class GenericMetricController<TDTO extends IOwnableDTO, TSERVICE extends IGenericMetricService<?, TDTO>>
+public abstract class GenericMetricController<TDTO extends IGenericMetricDTO<?>, TSERVICE extends IGenericMetricService<?, TDTO>>
                 extends GenericController<TDTO, TSERVICE> {
 
         public GenericMetricController(TSERVICE service) {

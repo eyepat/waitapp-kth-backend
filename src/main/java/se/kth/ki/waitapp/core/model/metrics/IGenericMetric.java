@@ -1,5 +1,7 @@
 package se.kth.ki.waitapp.core.model.metrics;
 
+import java.time.LocalDateTime;
+
 import se.kth.ki.waitapp.core.model.IOwnableModel;
 
 public interface IGenericMetric<T> extends IOwnableModel {
@@ -14,4 +16,8 @@ public interface IGenericMetric<T> extends IOwnableModel {
     Long getSprintID();
 
     void setSprintID(Long sprintID);
+
+    LocalDateTime getTimestamp();
+
+    void setTimestamp(LocalDateTime dateTime);
 }
