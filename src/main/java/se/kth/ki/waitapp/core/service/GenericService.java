@@ -60,14 +60,12 @@ public abstract class GenericService<T extends IBaseModel, TDTO extends IBaseDTO
 
         int paramc = 1;
 
-        String searchCondition = "(CAST(id AS string) LIKE ?" + paramc++ + " OR CAST(owner AS string) LIKE ?"
-                + paramc++ + ")";
+        String searchCondition = "(CAST(id AS string) LIKE ?" + paramc++ + ")";
 
-        final String processedQuery = "WHERE " + searchCondition;
-        final String processedCountQuery = "WHERE " + searchCondition;
+        final String processedQuery = searchQuery.isPresent() ? "WHERE " + searchCondition : "";
+        final String processedCountQuery = searchQuery.isPresent() ? "WHERE " + searchCondition : "";
         final Object[] processedParams = searchQuery.isPresent()
-                ? new Object[] { "%" + searchQuery.get() + "%",
-                        "%" + searchQuery.get() + "%" }
+                ? new Object[] { "%" + searchQuery.get() + "%" }
                 : new Object[] {};
         final int offset = page * size;
 
