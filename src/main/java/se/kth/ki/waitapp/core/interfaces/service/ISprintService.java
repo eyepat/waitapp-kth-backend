@@ -10,4 +10,6 @@ public interface ISprintService extends IGenericService<Sprint, SprintDTO> {
     Uni<Optional<SprintDTO>> latest();
 
     Uni<Optional<SprintDTO>> latestActive();
+
+    Uni<Boolean> stop(Long id);
 }

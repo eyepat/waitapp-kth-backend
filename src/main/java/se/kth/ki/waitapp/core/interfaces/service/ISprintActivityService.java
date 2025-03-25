@@ -12,4 +12,6 @@ import se.kth.ki.waitapp.dto.sprint.SprintActivityDTO;
 public interface ISprintActivityService extends IGenericService<SprintActivity, SprintActivityDTO> {
     Uni<List<SprintActivity>> getSprintActivitiesForUser(UUID userID, Level sprintLevel, SprintType sprintType,
             int amount);
+
+    Uni<Boolean> markCompleted(Long id, Boolean value);
 }
