@@ -1,0 +1,35 @@
+package se.kth.ki.waitapp.core.service;
+
+import org.eclipse.microprofile.jwt.JsonWebToken;
+import org.hibernate.reactive.mutiny.Mutiny.SessionFactory;
+
+import io.quarkus.test.junit.QuarkusTest;
+import se.kth.ki.waitapp.core.interfaces.repository.IUserRepository;
+import se.kth.ki.waitapp.core.model.metrics.BloodPressure;
+import se.kth.ki.waitapp.dto.metrics.BloodPressureDTO;
+import se.kth.ki.waitapp.mappers.IBloodPressureMapperImpl;
+import se.kth.ki.waitapp.repository.BloodPressureRepository;
+
+@QuarkusTest
+public class BloodPressureServiceTest extends GenericMetricServiceTest<String, BloodPressure, BloodPressureDTO, BloodPressureService, IBloodPressureMapperImpl, BloodPressureRepository>{
+
+    protected BloodPressureServiceTest() {
+        super(
+         BloodPressure.class, 
+           BloodPressureDTO.class, 
+    BloodPressureRepository.class, 
+        IBloodPressureMapperImpl.class
+        );
+    }
+
+    @Override
+    protected BloodPressureService createService(SessionFactory sessionFactory, JsonWebToken jwt, IUserRepository userRepository) {
+        var bp = new BloodPressureService(mapper, repository, identity);
+        bp.sf = sessionFactory;
+        bp.jwt = jwt;
+        bp.userRepository = userRepository;
+
+        return bp;
+    }
+    
+}

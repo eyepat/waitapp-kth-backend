@@ -7,7 +7,9 @@ import io.quarkus.security.Authenticated;
 import io.smallrye.mutiny.Uni;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
+import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
@@ -41,5 +43,13 @@ public class SprintController extends GenericController<SprintDTO, ISprintServic
                 .map(dto -> dto != null ? Response.ok(dto).build()
                         : Response.status(Response.Status.NOT_FOUND).build());
 
+    }
+
+    @PUT
+    @Path("/stop/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Authenticated
+    public Uni<Response> stop(@PathParam("id") Long id) {
+        return service.stop(id).map(ok -> ok ? Response.status(Response.Status.OK).build() : Response.status(Response.Status.BAD_REQUEST).build());
     }
 }

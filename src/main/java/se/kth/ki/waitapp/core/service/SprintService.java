@@ -10,6 +10,7 @@ import io.quarkus.security.identity.SecurityIdentity;
 import io.smallrye.mutiny.Uni;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.ws.rs.NotFoundException;
 import se.kth.ki.waitapp.core.interfaces.repository.ISprintRepository;
 import se.kth.ki.waitapp.core.interfaces.service.ISprintActivityService;
 import se.kth.ki.waitapp.core.interfaces.service.ISprintService;
@@ -98,6 +99,41 @@ public class SprintService extends GenericOwnableService<Sprint, SprintDTO> impl
                                     return dto_;
                                 });
                     });
+                });
+    }
+
+    @Override
+    public Uni<Boolean> stop(Long id) {
+        if (identity == null || identity.isAnonymous()) {
+                        return Uni.createFrom().failure(new SecurityException("No identity provided"));
+                }
+
+                String sub = jwt.getSubject();
+                if (sub == null || sub.isEmpty()) {
+                        return Uni.createFrom().failure(new SecurityException("Unable to get subject from JWT"));
+                }
+                UUID owner = UUID.fromString(sub);
+
+                return sf.withSession(session -> {
+                        return repository.find("id = ?1", id).firstResult()
+                                .onItem().transformToUni(entity -> {
+                                if (entity == null) {
+                                        return Uni.createFrom().failure(new NotFoundException("Entity not found"));
+                                }
+
+                                boolean isOwner = entity.getOwner().equals(owner);
+                                boolean isAdmin = identity.hasRole("admin");
+
+                                if (!isOwner && !isAdmin) {
+                                        return Uni.createFrom().failure(new SecurityException("User is not the owner or an admin"));
+                                }
+
+                                entity.setCompleted(true);
+                                entity.setEndDate(LocalDate.now());
+
+                                return repository.persistAndFlush(entity)
+                                        .onItem().transform(savedEntity -> true);
+                                });
                 });
     }
 
