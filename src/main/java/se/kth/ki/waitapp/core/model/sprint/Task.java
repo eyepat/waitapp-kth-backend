@@ -3,6 +3,7 @@ package se.kth.ki.waitapp.core.model.sprint;
 import io.quarkus.hibernate.reactive.panache.PanacheEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -41,6 +42,12 @@ public class Task extends PanacheEntity implements IBaseModel {
 
     @Column(nullable = false)
     private Boolean active;
+
+    @Column(nullable = false)
+    private Integer dateOffset;
+
+    @Column(nullable = false)
+    private Integer sprintNr;
 
     @PrePersist
     protected void onCreate() {

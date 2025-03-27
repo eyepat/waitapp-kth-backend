@@ -20,6 +20,8 @@ public class TaskDTO implements IBaseDTO {
     private SprintType type;
     private Level level;
     private TaskVariant variant;
+    private Integer sprintNr;
+    private Integer dateOffset;
     private String title;
     private String description;
     private String videoURL;
